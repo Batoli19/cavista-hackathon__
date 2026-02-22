@@ -1,785 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CliniqVoice — Voice-First Clinical Assistant</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #050d0a;
-    --surface: #0b1a14;
-    --surface2: #0f2218;
-    --accent: #00e87a;
-    --accent2: #00b85f;
-    --accent-dim: rgba(0,232,122,0.12);
-    --accent-glow: rgba(0,232,122,0.25);
-    --text: #e8f5ef;
-    --muted: #6b9c82;
-    --border: rgba(0,232,122,0.15);
-    --warning: #ffd166;
-    --info: #06c8dd;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Lora', Georgia, serif;
-    line-height: 1.75;
-    overflow-x: hidden;
-  }
-
-  /* Grid background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,232,122,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,232,122,0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ─── HERO ─── */
-  .hero {
-    padding: 5rem 0 4rem;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 600px; height: 400px;
-    background: radial-gradient(ellipse at center, rgba(0,232,122,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .badge {
-    display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 0.3rem 0.75rem;
-    border-radius: 2px;
-    margin-bottom: 2rem;
-    animation: fadeIn 0.6s ease;
-  }
-
-  .hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2.8rem, 6vw, 5rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-    animation: slideUp 0.7s ease;
-  }
-
-  .hero h1 .highlight {
-    color: var(--accent);
-    display: block;
-  }
-
-  .hero .tagline {
-    font-size: 1.15rem;
-    color: var(--muted);
-    max-width: 560px;
-    margin-bottom: 2.5rem;
-    animation: slideUp 0.8s ease;
-    font-style: italic;
-  }
-
-  .hero-stats {
-    display: flex;
-    gap: 3rem;
-    flex-wrap: wrap;
-    animation: slideUp 0.9s ease;
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 0.25rem;
-  }
-
-  /* ─── SECTIONS ─── */
-  section {
-    padding: 4rem 0;
-    border-bottom: 1px solid var(--border);
-    animation: fadeIn 1s ease;
-  }
-
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.75rem;
-  }
-
-  h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.9rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.01em;
-  }
-
-  h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    color: #b0cfc0;
-    margin-bottom: 1rem;
-  }
-
-  /* ─── PROBLEM BLOCK ─── */
-  .problem-quote {
-    border-left: 3px solid var(--accent);
-    padding: 1.5rem 2rem;
-    background: var(--surface);
-    margin: 2rem 0;
-    position: relative;
-    border-radius: 0 4px 4px 0;
-  }
-
-  .problem-quote::before {
-    content: '"';
-    font-family: 'Syne', sans-serif;
-    font-size: 5rem;
-    color: var(--accent-dim);
-    position: absolute;
-    top: -1rem;
-    left: 1rem;
-    line-height: 1;
-  }
-
-  .problem-quote p {
-    font-size: 1.15rem;
-    font-style: italic;
-    color: var(--text);
-    margin: 0;
-  }
-
-  /* ─── FEATURE GRID ─── */
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.25rem;
-    margin-top: 2rem;
-  }
-
-  .feature-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1.75rem;
-    border-radius: 4px;
-    transition: border-color 0.25s, transform 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .feature-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-
-  .feature-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-
-  .feature-card:hover::before { opacity: 1; }
-
-  .feature-icon {
-    font-size: 1.8rem;
-    margin-bottom: 0.75rem;
-    display: block;
-  }
-
-  .feature-card h3 { color: var(--text); margin-bottom: 0.5rem; }
-  .feature-card p { font-size: 0.9rem; margin: 0; color: var(--muted); }
-
-  /* ─── SUB-FEATURES ─── */
-  .sub-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .sub-feature {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 1.25rem;
-    border-radius: 4px;
-  }
-
-  .sub-feature ul {
-    list-style: none;
-    margin-top: 0.5rem;
-  }
-
-  .sub-feature ul li {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--muted);
-    padding: 0.2rem 0;
-    padding-left: 1rem;
-    position: relative;
-  }
-
-  .sub-feature ul li::before {
-    content: '›';
-    color: var(--accent);
-    position: absolute;
-    left: 0;
-  }
-
-  /* ─── JSON DISPLAY ─── */
-  .json-block {
-    background: #020a06;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1.75rem;
-    margin: 2rem 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .json-block::before {
-    content: 'OUTPUT';
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-  }
-
-  .json-block pre {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.85rem;
-    line-height: 1.7;
-    color: #7ec8a0;
-    white-space: pre;
-    overflow-x: auto;
-  }
-
-  .json-key { color: #00e87a; }
-  .json-str { color: #ffd166; }
-  .json-num { color: var(--info); }
-  .json-arr { color: #b0cfc0; }
-
-  /* ─── ARCHITECTURE ─── */
-  .arch-flow {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    margin: 2rem 0;
-  }
-
-  .arch-step {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    width: 100%;
-    max-width: 480px;
-  }
-
-  .arch-step-inner {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 0.9rem 1.5rem;
-    border-radius: 4px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.85rem;
-    flex: 1;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .arch-step-inner:hover {
-    border-color: var(--accent);
-    background: var(--surface2);
-  }
-
-  .arch-step-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--accent);
-    width: 28px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .arch-arrow {
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--accent);
-    padding: 0.2rem 0 0.2rem 3.75rem;
-    font-size: 0.9rem;
-    opacity: 0.6;
-  }
-
-  /* ─── TECH STACK ─── */
-  .tech-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .tech-group {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1.5rem;
-    border-radius: 4px;
-  }
-
-  .tech-group-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .tech-pill {
-    display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 0.2rem 0.6rem;
-    border-radius: 2px;
-    margin: 0.2rem;
-  }
-
-  /* ─── BOTSWANA SECTION ─── */
-  .bw-section {
-    background: linear-gradient(135deg, var(--surface2), var(--surface));
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 2.5rem;
-    margin-top: 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .bw-section::after {
-    content: '🇧🇼';
-    position: absolute;
-    bottom: -1rem;
-    right: 1rem;
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .bw-section h3 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-  }
-
-  .bw-features {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-
-  .bw-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    font-size: 0.95rem;
-    color: #b0cfc0;
-  }
-
-  .bw-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    margin-top: 0.6rem;
-    flex-shrink: 0;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    padding: 3rem 0;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  footer p {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  .footer-logo {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-  }
-
-  /* ─── BADGES ROW ─── */
-  .badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    animation: fadeIn 1s ease;
-  }
-
-  .pill-badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 100px;
-    border: 1px solid;
-  }
-
-  .pill-badge.green { color: var(--accent); border-color: rgba(0,232,122,0.4); background: rgba(0,232,122,0.07); }
-  .pill-badge.yellow { color: var(--warning); border-color: rgba(255,209,102,0.4); background: rgba(255,209,102,0.07); }
-  .pill-badge.blue { color: var(--info); border-color: rgba(6,200,221,0.4); background: rgba(6,200,221,0.07); }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: translateY(0) } }
-
-  /* ─── DIVIDER ─── */
-  .divider {
-    width: 48px;
-    height: 2px;
-    background: var(--accent);
-    margin: 1.5rem 0;
-  }
-
-  @media (max-width: 600px) {
-    .hero-stats { gap: 1.5rem; }
-    .feature-grid { grid-template-columns: 1fr; }
-    .tech-grid { grid-template-columns: 1fr; }
-  }
-</style>
-</head>
-<body>
-
-<!-- ─── HERO ─── -->
-<div class="container">
-  <div class="hero">
-    <div class="badge">Open Source · Healthcare AI · Botswana</div>
-    <h1>
-      CliniqVoice
-      <span class="highlight">Voice-First Clinical Assistant</span>
-    </h1>
-    <p class="tagline">
-      Clinicians speak. The system listens, understands, and documents — in real time.
-    </p>
-
-    <div class="badges">
-      <span class="pill-badge green">Python · Flask</span>
-      <span class="pill-badge green">LLM-Powered</span>
-      <span class="pill-badge yellow">Setswana NLP</span>
-      <span class="pill-badge blue">Real-Time SSE</span>
-      <span class="pill-badge blue">SOAP Notes</span>
-      <span class="pill-badge green">Voice-to-Data</span>
-    </div>
-
-    <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-num">0</span>
-        <span class="stat-label">Typing required</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">~3s</span>
-        <span class="stat-label">Extraction latency</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">4</span>
-        <span class="stat-label">Core modules</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">🇧🇼</span>
-        <span class="stat-label">Botswana-first</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ─── PROBLEM ─── -->
-<div class="container">
-  <section>
-    <div class="section-label">// the problem</div>
-    <h2>Healthcare documentation is broken.</h2>
-    <div class="divider"></div>
-    <p>Clinicians spend more time typing than treating. In many African healthcare systems — especially in Botswana — language barriers, documentation overload, and fragmented systems reduce care quality.</p>
-
-    <div class="problem-quote">
-      <p>What if a clinician could just <em>speak</em> — and the system handled everything else?</p>
-    </div>
-
-    <p>This project is our answer.</p>
-  </section>
-</div>
-
-<!-- ─── WHAT IT DOES ─── -->
-<div class="container">
-  <section>
-    <div class="section-label">// what it does</div>
-    <h2>The Platform</h2>
-    <div class="divider"></div>
-    <p>CliniqVoice is a <strong style="color:var(--text)">Voice-First Clinical Assistant</strong> that transforms natural clinician–patient conversations into structured, actionable medical data — with zero manual documentation.</p>
-
-    <div class="feature-grid">
-      <div class="feature-card">
-        <span class="feature-icon">🎙️</span>
-        <h3>Speech → Data</h3>
-        <p>Converts live clinician–patient conversations into structured medical records in real time.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">🧠</span>
-        <h3>AI Extraction</h3>
-        <p>Automatically pulls symptoms, vitals, diagnosis clues, and medications from unstructured speech.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">📊</span>
-        <h3>Live Insights</h3>
-        <p>Generates actionable clinical insights and risk scores the moment conversation ends.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">🗂️</span>
-        <h3>Auto-Documentation</h3>
-        <p>Structures and files SOAP notes without any manual input from the clinician.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">🌐</span>
-        <h3>Setswana-Ready</h3>
-        <p>Built specifically for Botswana. Understands and normalizes Setswana medical phrases.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">📈</span>
-        <h3>Clinical Dashboard</h3>
-        <p>Centralized intelligence layer with patient trends, alerts, and predictive flags.</p>
-      </div>
-    </div>
-
-    <div class="json-block">
-      <pre><span class="json-arr">{</span>
-  <span class="json-key">"patient_name"</span>: <span class="json-str">"Mpho"</span>,
-  <span class="json-key">"symptoms"</span>: <span class="json-arr">[</span><span class="json-str">"headache"</span>, <span class="json-str">"fever"</span><span class="json-arr">]</span>,
-  <span class="json-key">"duration"</span>: <span class="json-str">"3 days"</span>,
-  <span class="json-key">"possible_diagnosis"</span>: <span class="json-str">"malaria"</span>,
-  <span class="json-key">"risk_level"</span>: <span class="json-str">"medium"</span>,
-  <span class="json-key">"recommended_action"</span>: <span class="json-str">"lab test"</span>
-<span class="json-arr">}</span></pre>
-    </div>
-    <p style="text-align:center; font-family: 'IBM Plex Mono', monospace; font-size:0.8rem; color: var(--muted);">No typing. No manual structuring. Just intelligent care.</p>
-  </section>
-</div>
-
-<!-- ─── CORE FEATURES ─── -->
-<div class="container">
-  <section>
-    <div class="section-label">// core features</div>
-    <h2>Four Intelligence Modules</h2>
-    <div class="divider"></div>
-
-    <div class="sub-features">
-      <div class="sub-feature">
-        <h3>1 · Voice → Clinical Data</h3>
-        <ul>
-          <li>Real-time speech-to-text</li>
-          <li>Medical entity extraction</li>
-          <li>Auto SOAP note generation</li>
-        </ul>
-      </div>
-      <div class="sub-feature">
-        <h3>2 · Insight Engine</h3>
-        <ul>
-          <li>Risk scoring</li>
-          <li>Symptom clustering</li>
-          <li>Early diagnosis suggestions</li>
-          <li>Pattern detection</li>
-        </ul>
-      </div>
-      <div class="sub-feature">
-        <h3>3 · Smart Dashboard</h3>
-        <ul>
-          <li>Patient summaries</li>
-          <li>Trends & alerts</li>
-          <li>Predictive flags</li>
-          <li>Actionable recommendations</li>
-        </ul>
-      </div>
-      <div class="sub-feature">
-        <h3>4 · Setswana NLP</h3>
-        <ul>
-          <li>Detects Setswana phrases</li>
-          <li>Normalizes to medical English</li>
-          <li>Preserves local authenticity</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bw-section">
-      <h3>🇧🇼 Built for Botswana</h3>
-      <p>Designed specifically for the realities of Botswana's healthcare ecosystem — where patients speak Setswana and clinicians need tools that work <em>with</em> their language, not against it.</p>
-      <div class="bw-features">
-        <div class="bw-item"><div class="bw-dot"></div><span>Multilingual NLP pipeline detecting Setswana medical phrases</span></div>
-        <div class="bw-item"><div class="bw-dot"></div><span>Normalization into structured English medical fields</span></div>
-        <div class="bw-item"><div class="bw-dot"></div><span>Preservation of local patient communication authenticity</span></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ─── ARCHITECTURE ─── -->
-<div class="container">
-  <section>
-    <div class="section-label">// system architecture</div>
-    <h2>How It Flows</h2>
-    <div class="divider"></div>
-    <p>From a clinician's voice to a structured dashboard record — the entire pipeline runs in real time.</p>
-
-    <div class="arch-flow">
-      <div class="arch-step">
-        <span class="arch-step-num">01</span>
-        <div class="arch-step-inner">🎙️ &nbsp;Voice Input</div>
-      </div>
-      <div class="arch-arrow">↓</div>
-      <div class="arch-step">
-        <span class="arch-step-num">02</span>
-        <div class="arch-step-inner">📝 &nbsp;Speech-to-Text</div>
-      </div>
-      <div class="arch-arrow">↓</div>
-      <div class="arch-step">
-        <span class="arch-step-num">03</span>
-        <div class="arch-step-inner">🧠 &nbsp;AI Extraction Engine</div>
-      </div>
-      <div class="arch-arrow">↓</div>
-      <div class="arch-step">
-        <span class="arch-step-num">04</span>
-        <div class="arch-step-inner">📦 &nbsp;Structured Medical Data</div>
-      </div>
-      <div class="arch-arrow">↓</div>
-      <div class="arch-step">
-        <span class="arch-step-num">05</span>
-        <div class="arch-step-inner">⚡ &nbsp;Insight & Risk Engine</div>
-      </div>
-      <div class="arch-arrow">↓</div>
-      <div class="arch-step">
-        <span class="arch-step-num">06</span>
-        <div class="arch-step-inner">📊 &nbsp;Live Clinical Dashboard</div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ─── TECH STACK ─── -->
-<div class="container">
-  <section>
-    <div class="section-label">// how we built it</div>
-    <h2>Technology Stack</h2>
-    <div class="divider"></div>
-
-    <div class="tech-grid">
-      <div class="tech-group">
-        <div class="tech-group-label">🖥️ Backend</div>
-        <span class="tech-pill">Python</span>
-        <span class="tech-pill">Flask</span>
-        <span class="tech-pill">REST API</span>
-        <span class="tech-pill">SSE</span>
-        <span class="tech-pill">Real-time pipeline</span>
-      </div>
-      <div class="tech-group">
-        <div class="tech-group-label">🧠 AI Layer</div>
-        <span class="tech-pill">LLM Parsing</span>
-        <span class="tech-pill">Custom prompts</span>
-        <span class="tech-pill">Confidence scoring</span>
-        <span class="tech-pill">Entity extraction</span>
-      </div>
-      <div class="tech-group">
-        <div class="tech-group-label">🌐 Frontend</div>
-        <span class="tech-pill">Modern dashboard</span>
-        <span class="tech-pill">Live streaming</span>
-        <span class="tech-pill">Responsive UI</span>
-        <span class="tech-pill">Medical design</span>
-      </div>
-      <div class="tech-group">
-        <div class="tech-group-label">🔊 Voice</div>
-        <span class="tech-pill">Speech-to-text</span>
-        <span class="tech-pill">Real-time transcript</span>
-        <span class="tech-pill">Structured output</span>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ─── FOOTER ─── -->
-<div class="container">
-  <footer>
-    <div class="footer-logo">CliniqVoice</div>
-    <p>Built with purpose · Healthcare for Africa · 🇧🇼 Botswana</p>
-    <p style="margin-top:0.5rem">Transforming clinical conversations into intelligent care.</p>
-  </footer>
-</div>
-
-</body>
-</html>
+Healthcare documentation is broken.
+
+Clinicians spend more time typing than treating. In many African healthcare systems — especially in Botswana — language barriers, documentation overload, and fragmented systems reduce care quality.
+
+We asked:
+
+What if a clinician could just speak — and the system handled everything else?
+
+This project is our answer.
+
+🚀 What It Does
+
+Our platform is a Voice-First Clinical Assistant that:
+
+🎙️ Converts clinician–patient conversations into structured medical data
+
+🧠 Extracts symptoms, vitals, diagnosis clues, and medications
+
+📊 Generates actionable insights in real time
+
+🗂️ Automatically structures documentation
+
+🌐 Supports Setswana for localized care delivery
+
+📈 Provides dashboards for clinical intelligence
+
+It transforms natural speech into:
+
+{
+  "patient_name": "Mpho",
+  "symptoms": ["headache", "fever"],
+  "duration": "3 days",
+  "possible_diagnosis": "malaria",
+  "risk_level": "medium",
+  "recommended_action": "lab test"
+}
+
+No typing. No manual structuring. Just intelligent care.
+
+🧠 Core Features
+1️⃣ Voice → Structured Clinical Data
+
+Real-time speech-to-text
+
+AI-powered medical entity extraction
+
+Auto SOAP note generation
+
+2️⃣ Clinical Insight Engine
+
+Risk scoring
+
+Symptom clustering
+
+Early diagnosis suggestions
+
+Pattern detection
+
+3️⃣ Smart Dashboard
+
+Patient summaries
+
+Trends & alerts
+
+Predictive flags
+
+Actionable recommendations
+
+4️⃣ Setswana-Ready System 🇧🇼
+
+Designed specifically for Botswana healthcare workflows.
+
+We are building multilingual NLP pipelines to:
+
+Detect Setswana medical phrases
+
+Normalize into structured English medical fields
+
+Preserve local patient communication authenticity
+
+🏗️ How We Built It
+🖥️ Backend
+
+Python (Flask API server)
+
+AI routing engine
+
+Real-time processing pipeline
+
+SSE (Server-Sent Events) for live updates
+
+🧠 AI Layer
+
+LLM-powered medical parsing
+
+Custom extraction prompts
+
+Confidence scoring logic
+
+Insight generation engine
+
+🌐 Frontend
+
+Modern dashboard UI
+
+Live data streaming
+
+Responsive layout
+
+Premium medical interface design
+
+🔊 Voice Integration
+
+Speech-to-text processing
+
+Real-time transcription
+
+Structured output pipeline
+
+🏥 System Architecture
+Voice Input
+    ↓
+Speech-to-Text
+    ↓
+AI Extraction Engine
+    ↓
+Structured Medical Data
+    ↓
+Insight & Risk Engine
+    ↓
+Live Clinical Dashboard
