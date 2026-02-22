@@ -1,0 +1,14 @@
+Module 1 — Clinical Structuring (MVP #1)
+
+Input: transcript
+Output: structured_data JSON (validated)
+
+Why first: everything else depends on it.
+
+Tech:
+
+GPT-4o / GPT-4.1 structured JSON output
+
+Pydantic schema validation
+
+“repair JSON” retry once

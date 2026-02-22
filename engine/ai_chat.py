@@ -18,12 +18,28 @@ import xml.etree.ElementTree as ET
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 
+
+def _normalize_gemini_model_id(model: str) -> str:
+    """
+    Ensures Gemini model ID does not contain 'models/' prefix.
+    """
+    m = (model or "").strip()
+    if m.startswith("models/"):
+        m = m.split("models/", 1)[1]
+    return m
+
+
 # Models
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-1.5-flash")
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 CACHE_TTL_SECONDS = 300
 _TEXT_CACHE: Dict[str, tuple[float, str]] = {}
 _GEMINI_MODEL_CANDIDATES = [GEMINI_MODEL, "gemini-1.5-flash", "gemini-1.5-flash-8b"]
+_GEMINI_MODEL_CANDIDATES = [
+    _normalize_gemini_model_id(m)
+    for m in _GEMINI_MODEL_CANDIDATES
+    if m
+]
 
 STYLE_RULES = (
     "You are a concise assistant.\n"
@@ -85,6 +101,25 @@ def _with_retry(call_fn):
             delay *= 2
     if last_err:
         raise last_err
+
+
+def _list_gemini_models() -> list[str]:
+    """
+    Fetch available Gemini models that support generateContent.
+    """
+    url = f"https://generativelanguage.googleapis.com/v1beta/models?key={GEMINI_API_KEY}"
+    req = urllib.request.Request(url, headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=15) as response:
+        data = json.loads(response.read().decode("utf-8"))
+
+    discovered = []
+    for item in data.get("models", []):
+        name = item.get("name", "")
+        supported = item.get("supportedGenerationMethods", [])
+        if name.startswith("models/") and "generateContent" in supported:
+            discovered.append(name.split("models/", 1)[1])
+
+    return discovered
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -227,7 +262,7 @@ def chat_with_ai(message: str, files: List[Dict[str, Any]] = None) -> str:
 #  GROQ — Fast, unlimited, text-only (DEFAULT)
 # ══════════════════════════════════════════════════════════════════════════════
 
-def _chat_with_groq(message: str) -> str:
+def _chat_with_groq(message: str, temperature: float = 0.7) -> str:
     """
     Groq API — fast, unlimited free tier, text only.
     This is the DEFAULT path for all text queries.
@@ -240,7 +275,7 @@ def _chat_with_groq(message: str) -> str:
             {"role": "system", "content": STYLE_RULES},
             {"role": "user", "content": message}
         ],
-        "temperature": 0.7,
+        "temperature": float(temperature),
         "max_tokens": 1024
     }
     
@@ -350,7 +385,7 @@ def _chat_with_gemini_vision(message: str, files: List[Dict[str, Any]]) -> str:
         return f"Vision error: {e}"
 
 
-def _chat_with_gemini_text(message: str) -> str:
+def _chat_with_gemini_text(message: str, temperature: float = 0.7) -> str:
     """
     Gemini text-only mode (fallback when Groq unavailable).
     Single attempt, no retries.
@@ -359,7 +394,10 @@ def _chat_with_gemini_text(message: str) -> str:
         return "AI unavailable (no API keys configured)."
 
     try:
-        payload = {"contents": [{"parts": [{"text": f"{STYLE_RULES}\nUser request:\n{message}"}]}]}
+        payload = {
+            "contents": [{"parts": [{"text": f"{STYLE_RULES}\nUser request:\n{message}"}]}],
+            "generationConfig": {"temperature": float(temperature)},
+        }
         data_json = json.dumps(payload).encode("utf-8")
 
         last_error = None
@@ -379,6 +417,19 @@ def _chat_with_gemini_text(message: str) -> str:
             except Exception as e:
                 last_error = e
                 continue
+        # If 404 occurred, try auto-discovered models
+        if isinstance(last_error, urllib.error.HTTPError) and last_error.code == 404:
+            try:
+                discovered = _list_gemini_models()
+                for model in discovered[:5]:
+                    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+                    req = urllib.request.Request(url, data=data_json, headers={"Content-Type": "application/json"})
+                    with urllib.request.urlopen(req, timeout=15) as response:
+                        resp_body = response.read().decode("utf-8")
+                        resp_data = json.loads(resp_body)
+                        return resp_data["candidates"][0]["content"]["parts"][0]["text"].strip()
+            except Exception:
+                pass
         raise last_error if last_error else Exception("Gemini unavailable")
 
     except urllib.error.HTTPError as e:

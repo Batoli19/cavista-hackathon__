@@ -20,6 +20,41 @@ const fileInput = document.getElementById('fileInput');
 const attachmentsPreview = document.getElementById('attachmentsPreview');
 const newProjectBtn = document.querySelector('.new-project-btn');
 const quickActionCards = document.querySelectorAll('.quick-action-card');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+const THEME_KEY = 'nexus_theme';
+
+function applyTheme(theme) {
+    const isDark = theme === 'dark';
+    document.body.classList.toggle('dark-mode', isDark);
+    if (themeToggleBtn) {
+        themeToggleBtn.textContent = isDark ? 'Light' : 'Dark';
+        themeToggleBtn.setAttribute('aria-pressed', String(isDark));
+    }
+}
+
+function initTheme() {
+    let stored = null;
+    try {
+        stored = localStorage.getItem(THEME_KEY);
+    } catch (_) {
+        stored = null;
+    }
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light'));
+}
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+        const nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(nextTheme);
+        try {
+            localStorage.setItem(THEME_KEY, nextTheme);
+        } catch (_) {
+            // No-op
+        }
+    });
+}
 
 // State
 // State
@@ -27,6 +62,41 @@ let isRecording = false;
 let recognition = null;
 let attachedFiles = [];
 let setupBannerEl = null;
+const VOICE_SILENCE_MS = 20000;
+let voiceSilenceTimer = null;
+let voiceManualStop = false;
+let voiceTranscriptBuffer = '';
+
+function clearVoiceSilenceTimer() {
+    if (voiceSilenceTimer) {
+        clearTimeout(voiceSilenceTimer);
+        voiceSilenceTimer = null;
+    }
+}
+
+function scheduleVoiceAutoSend() {
+    clearVoiceSilenceTimer();
+    voiceSilenceTimer = setTimeout(() => {
+        if (!isRecording) return;
+        if (!messageInput.value.trim()) return;
+        stopVoiceRecognition(true);
+        sendMessage();
+    }, VOICE_SILENCE_MS);
+}
+
+function stopVoiceRecognition(manual = false) {
+    voiceManualStop = manual;
+    clearVoiceSilenceTimer();
+    if (recognition) {
+        try {
+            recognition.stop();
+        } catch (_) {
+            // No-op
+        }
+    }
+    isRecording = false;
+    voiceBtn.classList.remove('recording');
+}
 
 function ensureSetupBanner() {
     if (setupBannerEl) return setupBannerEl;
@@ -84,6 +154,10 @@ messageInput.addEventListener('keydown', (e) => {
 });
 
 async function sendMessage() {
+    if (isRecording) {
+        stopVoiceRecognition(true);
+    }
+
     const text = messageInput.value.trim();
 
     if (text === '' && attachedFiles.length === 0) return;
@@ -149,7 +223,7 @@ async function sendMessage() {
             typingIndicator.remove();
         }
         console.error(err);
-        const errorDiv = createAIMessage("Error: Could not connect to Jarvis backend. Is server.py running?");
+        const errorDiv = createAIMessage("Error: Could not connect to the Nexus Clinical AI service. Is the engine running?");
         messagesArea.appendChild(errorDiv);
         scrollToBottom();
     }
@@ -229,6 +303,19 @@ function createAIMessage(text, evidence = [], actions = [], meta = {}, files = [
     textP.innerHTML = renderSimpleMarkdown(text);
     content.appendChild(textP);
 
+    const translation = (((meta || {}).payload || {}).translation);
+    if (translation && typeof translation === 'object') {
+        const translationPanel = renderTranslationPanel(translation);
+        content.appendChild(translationPanel);
+    }
+
+    const insights = (((meta || {}).payload || {}).insights);
+    if (insights && typeof insights === 'object') {
+        messageDiv.classList.add('insights-message');
+        const dashboard = renderInsightsDashboard(insights);
+        content.appendChild(dashboard);
+    }
+
     if (evidence.length > 0) {
         const evidenceDiv = renderEvidence(evidence);
         content.appendChild(evidenceDiv);
@@ -253,6 +340,408 @@ function createAIMessage(text, evidence = [], actions = [], meta = {}, files = [
     messageDiv.appendChild(content);
 
     return messageDiv;
+}
+
+function renderTranslationPanel(translation) {
+    const wrap = document.createElement('div');
+    wrap.className = 'translation-panel';
+    const language = String(translation.language || 'unknown').toLowerCase();
+    const confidence = Math.round((Number(translation.confidence) || 0) * 100);
+    const label = language === 'tn' ? 'Setswana' : language === 'en' ? 'English' : 'Unknown';
+    const notes = Array.isArray(translation.notes) ? translation.notes : [];
+    const keyTerms = Array.isArray(translation.key_terms) ? translation.key_terms : [];
+    const original = String(translation.original_transcript || '');
+    const normalized = String(translation.normalized_transcript_en || '');
+
+    wrap.innerHTML = `
+        <div class="translation-head">
+            <strong>Transcript Normalization</strong>
+            <span class="translation-badge">${label}</span>
+            <span class="translation-confidence">${confidence}% confidence</span>
+        </div>
+        <div class="translation-line">Language detected: <strong>${label}</strong></div>
+    `;
+
+    const details = document.createElement('details');
+    details.className = 'translation-details';
+    details.innerHTML = `
+        <summary>View original transcript</summary>
+        <div class="translation-columns">
+            <div>
+                <div class="translation-col-title">Original</div>
+                <pre>${original}</pre>
+            </div>
+            <div>
+                <div class="translation-col-title">Normalized English</div>
+                <pre>${normalized}</pre>
+            </div>
+        </div>
+    `;
+    wrap.appendChild(details);
+
+    if (keyTerms.length > 0) {
+        const terms = document.createElement('div');
+        terms.className = 'translation-terms';
+        terms.innerHTML = `<div class="translation-col-title">Key terms</div>`;
+        const ul = document.createElement('ul');
+        keyTerms.slice(0, 20).forEach((item) => {
+            const li = document.createElement('li');
+            li.textContent = `${item.tn || '-'} -> ${item.en || '-'} (${item.type || 'other'})`;
+            ul.appendChild(li);
+        });
+        terms.appendChild(ul);
+        wrap.appendChild(terms);
+    }
+
+    if (notes.length > 0) {
+        const noteBox = document.createElement('div');
+        noteBox.className = 'translation-notes';
+        noteBox.innerHTML = `<div class="translation-col-title">Notes</div><ul>${notes.slice(0, 8).map((n) => `<li>${n}</li>`).join('')}</ul>`;
+        wrap.appendChild(noteBox);
+    }
+
+    return wrap;
+}
+
+function _variantClass(variant) {
+    const v = String(variant || 'info').toLowerCase();
+    if (v === 'danger') return 'var-danger';
+    if (v === 'warning') return 'var-warning';
+    if (v === 'success') return 'var-success';
+    return 'var-info';
+}
+
+function _severityVariant(severity) {
+    const s = String(severity || '').toLowerCase();
+    if (s === 'high') return 'danger';
+    if (s === 'medium') return 'warning';
+    if (s === 'low') return 'success';
+    return 'info';
+}
+
+function renderInsightsDashboard(insights) {
+    const root = document.createElement('div');
+    root.className = 'insights insights-dashboard powerbi';
+
+    const analytics = insights.analytics || {};
+    const diagnosis = insights.diagnosis_support || {};
+    const actionable = insights.actionable_insights || {};
+    const summaryCards = Array.isArray(analytics.summary_cards) ? analytics.summary_cards : [];
+    const riskScores = Array.isArray(analytics.risk_scores) ? analytics.risk_scores : [];
+    const vitals = Array.isArray(analytics.vitals) ? analytics.vitals : [];
+    const gaps = Array.isArray(actionable.documentation_gaps) ? actionable.documentation_gaps : [];
+    const redCount = Number(((analytics.red_flag_summary || {}).count) || 0);
+    let riskSortDesc = true;
+    let activeVitalFilter = 'all';
+    const maxRisk = Math.max(...riskScores.map(x => Number(x.value) || 0), 0);
+    const gaugePct = Math.round(maxRisk * 100);
+
+    const header = document.createElement('div');
+    header.className = 'toolbar insights-toolbar';
+    header.innerHTML = `
+        <div>
+            <div class="insights-title">Clinical Insights Dashboard</div>
+            <div class="insights-subtitle">Decision support only; clinician verification required.</div>
+        </div>
+    `;
+    const btnWrap = document.createElement('div');
+    btnWrap.className = 'insights-actions';
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'btn insights-btn';
+    copyBtn.textContent = 'Copy JSON';
+    copyBtn.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(JSON.stringify(insights, null, 2));
+            copyBtn.textContent = 'Copied';
+            showToast('Insights JSON copied');
+            setTimeout(() => { copyBtn.textContent = 'Copy JSON'; }, 1200);
+        } catch (e) {
+            showToast('Copy failed');
+        }
+    });
+    const exportBtn = document.createElement('button');
+    exportBtn.type = 'button';
+    exportBtn.className = 'btn insights-btn';
+    exportBtn.textContent = 'Export Patient Summary';
+    exportBtn.addEventListener('click', () => showToast('Coming soon'));
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.type = 'button';
+    fullscreenBtn.className = 'btn insights-btn';
+    fullscreenBtn.textContent = 'Fullscreen';
+    fullscreenBtn.addEventListener('click', () => {
+        const inFs = root.classList.toggle('insights-fullscreen');
+        document.body.classList.toggle('has-insights-fullscreen', inFs);
+        fullscreenBtn.textContent = inFs ? 'Exit Fullscreen' : 'Fullscreen';
+    });
+    btnWrap.appendChild(copyBtn);
+    btnWrap.appendChild(exportBtn);
+    btnWrap.appendChild(fullscreenBtn);
+    header.appendChild(btnWrap);
+    root.appendChild(header);
+
+    const controls = document.createElement('div');
+    controls.className = 'insights-controls';
+    controls.innerHTML = `
+        <div class="control-group">
+            <span class="control-label">Vitals Filter</span>
+            <div class="chip-group" data-role="vital-filter">
+                <button class="chip active" data-filter="all">All</button>
+                <button class="chip" data-filter="high">High</button>
+                <button class="chip" data-filter="low">Low</button>
+                <button class="chip" data-filter="normal">Normal</button>
+                <button class="chip" data-filter="not_captured">Not captured</button>
+            </div>
+        </div>
+        <div class="control-group control-actions">
+            <button type="button" class="btn insights-btn" data-role="sort-risk">Sort Risk: High -> Low</button>
+            <button type="button" class="btn insights-btn" data-role="expand-all">Expand All</button>
+            <button type="button" class="btn insights-btn" data-role="collapse-all">Collapse All</button>
+        </div>
+    `;
+    root.appendChild(controls);
+
+    const topGrid = document.createElement('div');
+    topGrid.className = 'insights-top-grid';
+
+    const cards = document.createElement('div');
+    cards.className = 'cards summary-cards';
+    summaryCards.forEach((card) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = `card summary-card ${_variantClass(card.variant)}`;
+        const valueRaw = String(card.label || '').toLowerCase().includes('confidence')
+            ? `${Math.round((Number(card.value) || 0) * 100)}%`
+            : String(card.value ?? '');
+        cardEl.innerHTML = `
+            <div class="summary-label">${String(card.label || '')}</div>
+            <div class="summary-value">${valueRaw}</div>
+            <div class="summary-sub">Updated from latest extracted structured data</div>
+        `;
+        cards.appendChild(cardEl);
+    });
+    topGrid.appendChild(cards);
+
+    const gaugeWrap = document.createElement('div');
+    gaugeWrap.className = 'risk-gauge-card';
+    const tier = String(diagnosis.risk_tier || 'low');
+    const gaugeClass = tier === 'high' ? 'var-danger' : tier === 'medium' ? 'var-warning' : 'var-success';
+    gaugeWrap.innerHTML = `
+        <div class="gauge-title">Overall Risk Signal</div>
+        <div class="gauge ${gaugeClass}" style="--p:${gaugePct};">
+            <div class="gauge-inner">${gaugePct}%</div>
+        </div>
+        <div class="gauge-meta">
+            <span class="badge ${_variantClass(_severityVariant(tier))}">${tier}</span>
+            <span class="gauge-red">Red flags: ${redCount}</span>
+            <span class="gauge-red">Gaps: ${gaps.length}</span>
+        </div>
+    `;
+    topGrid.appendChild(gaugeWrap);
+    root.appendChild(topGrid);
+
+    const middleGrid = document.createElement('div');
+    middleGrid.className = 'insights-mid-grid';
+
+    const vitalsBlock = document.createElement('div');
+    vitalsBlock.className = 'insights-section visual-card';
+    vitalsBlock.innerHTML = `<h4>Vitals Monitor</h4>`;
+    const table = document.createElement('table');
+    table.className = 'table vitals-table';
+    table.innerHTML = '<thead><tr><th>Vital</th><th>Value</th><th>Normal Range</th><th>Status</th><th>Trend</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    const renderVitalsRows = () => {
+        tbody.innerHTML = '';
+        const filtered = vitals.filter((v) => activeVitalFilter === 'all' || String(v.status || 'not_captured') === activeVitalFilter);
+        filtered.forEach((v) => {
+            const tr = document.createElement('tr');
+            const valueNum = Number(v.value);
+            const hasNum = !Number.isNaN(valueNum) && v.value !== null && v.value !== undefined;
+            const valueText = hasNum ? `${v.value} ${v.unit || ''}`.trim() : 'not captured';
+            const min = Number(v.min);
+            const max = Number(v.max);
+            let pct = 0;
+            if (hasNum && !Number.isNaN(min) && !Number.isNaN(max) && max > min) {
+                pct = Math.max(0, Math.min(100, ((valueNum - min) / (max - min)) * 100));
+            }
+            const status = String(v.status || 'not_captured');
+            const statusVariant = status === 'normal' ? 'success' : status === 'high' ? 'danger' : status === 'low' ? 'warning' : 'info';
+            tr.innerHTML = `
+                <td>${v.name || ''}</td>
+                <td>${valueText}</td>
+                <td>${v.min ?? '-'} - ${v.max ?? '-'}</td>
+                <td><span class="pill badge ${_variantClass(statusVariant)}">${status}</span></td>
+                <td>
+                  <div class="miniTrack">
+                    <div class="miniFill ${_variantClass(statusVariant)} animate-fill" style="width:${hasNum ? pct : 0}%"></div>
+                  </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        if (!filtered.length) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = '<td colspan="5">No vitals match this filter.</td>';
+            tbody.appendChild(emptyRow);
+        }
+    };
+    renderVitalsRows();
+    table.appendChild(tbody);
+    vitalsBlock.appendChild(table);
+    middleGrid.appendChild(vitalsBlock);
+
+    const riskBlock = document.createElement('div');
+    riskBlock.className = 'insights-section visual-card bars';
+    riskBlock.innerHTML = `<h4>Risk Score Distribution</h4>`;
+    const renderRiskRows = () => {
+        riskBlock.innerHTML = `<h4>Risk Score Distribution</h4>`;
+        const sorted = [...riskScores].sort((a, b) => {
+            const av = Number(a.value) || 0;
+            const bv = Number(b.value) || 0;
+            return riskSortDesc ? (bv - av) : (av - bv);
+        });
+        sorted.forEach((score, idx) => {
+            const val = Math.max(0, Math.min(1, Number(score.value) || 0));
+            const band = String(score.band || 'low');
+            const bVariant = band === 'high' ? 'danger' : band === 'medium' ? 'warning' : 'success';
+            const row = document.createElement('details');
+            row.className = 'risk-row';
+            row.open = idx === 0;
+            row.innerHTML = `
+                <summary>
+                    <span>${score.name || ''}</span>
+                    <span class="risk-right">
+                        <span class="badge ${_variantClass(bVariant)}">${band}</span>
+                        <span>${Math.round(val * 100)}%</span>
+                    </span>
+                </summary>
+                <div class="barTrack risk-bar"><div class="barFill risk-fill ${_variantClass(bVariant)} animate-fill" style="width:${val * 100}%"></div></div>
+                <div class="risk-exp">${String(score.explanation || '')}</div>
+            `;
+            riskBlock.appendChild(row);
+        });
+    };
+    renderRiskRows();
+    middleGrid.appendChild(riskBlock);
+    root.appendChild(middleGrid);
+
+    const diagDetails = document.createElement('details');
+    diagDetails.className = 'insights-details';
+    diagDetails.open = true;
+    const diffs = Array.isArray(diagnosis.differential_diagnoses) ? diagnosis.differential_diagnoses : [];
+    const evidence = Array.isArray(diagnosis.evidence) ? diagnosis.evidence : [];
+    const questions = Array.isArray(diagnosis.missing_questions) ? diagnosis.missing_questions : [];
+    diagDetails.innerHTML = `<summary>Diagnosis Support</summary>`;
+    const diagBody = document.createElement('div');
+    diagBody.className = 'insights-detail-body';
+    const diffRows = diffs.map((d, i) => `<tr><td>${i + 1}</td><td>${d}</td></tr>`).join('');
+    const evRows = evidence.map((e) => `<tr><td>${e.finding || ''}</td><td>${e.source || ''}</td></tr>`).join('');
+    diagBody.innerHTML = `
+        <div class="detail-grid">
+            <div>
+                <strong>Differential Diagnoses (possible)</strong>
+                <table class="table compact"><thead><tr><th>#</th><th>Condition</th></tr></thead><tbody>${diffRows || '<tr><td colspan="2">No differentials</td></tr>'}</tbody></table>
+            </div>
+            <div>
+                <strong>Evidence Mapping</strong>
+                <table class="table compact"><thead><tr><th>Finding</th><th>Source</th></tr></thead><tbody>${evRows || '<tr><td colspan="2">No evidence captured</td></tr>'}</tbody></table>
+            </div>
+        </div>
+        <div><strong>Missing Questions</strong><ul>${questions.map(q => `<li>${q}</li>`).join('')}</ul></div>
+    `;
+    diagDetails.appendChild(diagBody);
+    root.appendChild(diagDetails);
+
+    const actionDetails = document.createElement('details');
+    actionDetails.className = 'insights-details';
+    actionDetails.open = true;
+    actionDetails.innerHTML = `<summary>Actionable Insights</summary>`;
+    const actionBody = document.createElement('div');
+    actionBody.className = 'insights-detail-body';
+    const steps = actionable.recommended_next_steps || {};
+    const safety = Array.isArray(actionable.safety_net) ? actionable.safety_net : [];
+    actionBody.innerHTML = `
+        <div class="step-columns">
+            <div class="step-col"><h5>Immediate</h5><ul>${(steps.Immediate || []).map(s => `<li>${s}</li>`).join('')}</ul></div>
+            <div class="step-col"><h5>Today</h5><ul>${(steps.Today || []).map(s => `<li>${s}</li>`).join('')}</ul></div>
+            <div class="step-col"><h5>Follow-up</h5><ul>${(steps['Follow-up'] || []).map(s => `<li>${s}</li>`).join('')}</ul></div>
+        </div>
+        <div class="safety-box"><strong>Safety Net</strong><ul>${safety.map(s => `<li>${s}</li>`).join('')}</ul></div>
+    `;
+    actionDetails.appendChild(actionBody);
+    root.appendChild(actionDetails);
+
+    const gapDetails = document.createElement('details');
+    gapDetails.className = 'insights-details';
+    gapDetails.innerHTML = `<summary>Documentation Gaps</summary>`;
+    const gapBody = document.createElement('div');
+    gapBody.className = 'insights-detail-body';
+    gapBody.innerHTML = `
+        <table class="table compact">
+            <thead><tr><th>Severity</th><th>Gap</th><th>Why it matters</th></tr></thead>
+            <tbody>
+                ${(gaps.map(g => `
+                    <tr>
+                        <td><span class="pill badge ${_variantClass(_severityVariant(g.severity))}">${g.severity || 'info'}</span></td>
+                        <td>${g.gap || ''}</td>
+                        <td>${g.why_it_matters || ''}</td>
+                    </tr>
+                `).join('')) || '<tr><td colspan="3">No documentation gaps</td></tr>'}
+            </tbody>
+        </table>
+    `;
+    gapDetails.appendChild(gapBody);
+    root.appendChild(gapDetails);
+
+    const vitalFilterWrap = controls.querySelector('[data-role="vital-filter"]');
+    if (vitalFilterWrap) {
+        vitalFilterWrap.querySelectorAll('.chip').forEach((chip) => {
+            chip.addEventListener('click', () => {
+                activeVitalFilter = chip.getAttribute('data-filter') || 'all';
+                vitalFilterWrap.querySelectorAll('.chip').forEach((x) => x.classList.remove('active'));
+                chip.classList.add('active');
+                renderVitalsRows();
+            });
+        });
+    }
+
+    const sortRiskBtn = controls.querySelector('[data-role="sort-risk"]');
+    if (sortRiskBtn) {
+        sortRiskBtn.addEventListener('click', () => {
+            riskSortDesc = !riskSortDesc;
+            sortRiskBtn.textContent = `Sort Risk: ${riskSortDesc ? 'High -> Low' : 'Low -> High'}`;
+            renderRiskRows();
+        });
+    }
+
+    const expandAllBtn = controls.querySelector('[data-role="expand-all"]');
+    if (expandAllBtn) {
+        expandAllBtn.addEventListener('click', () => {
+            root.querySelectorAll('details').forEach((d) => { d.open = true; });
+        });
+    }
+
+    const collapseAllBtn = controls.querySelector('[data-role="collapse-all"]');
+    if (collapseAllBtn) {
+        collapseAllBtn.addEventListener('click', () => {
+            root.querySelectorAll('details').forEach((d) => { d.open = false; });
+        });
+    }
+
+    return root;
+}
+
+function showToast(text) {
+    const toast = document.createElement('div');
+    toast.className = 'insights-toast';
+    toast.textContent = String(text || 'Done');
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => {
+        toast.classList.add('show');
+    });
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 180);
+    }, 1200);
 }
 
 function renderSimpleMarkdown(text) {
@@ -555,41 +1044,65 @@ function toggleRecording() {
     if (!isRecording) {
         recognition = new SpeechRecognition();
         recognition.lang = 'en-US';
-        recognition.interimResults = false;
+        recognition.continuous = true;
+        recognition.interimResults = true;
         recognition.maxAlternatives = 1;
+        voiceManualStop = false;
+        voiceTranscriptBuffer = messageInput.value ? `${messageInput.value.trim()} ` : '';
 
         recognition.onstart = () => {
             isRecording = true;
             voiceBtn.classList.add('recording');
+            scheduleVoiceAutoSend();
         };
 
         recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            console.log('Recognized:', transcript);
-            messageInput.value = transcript;
+            let interimText = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const result = event.results[i];
+                const transcript = (result[0] && result[0].transcript) ? result[0].transcript.trim() : '';
+                if (!transcript) continue;
+                if (result.isFinal) {
+                    voiceTranscriptBuffer = `${voiceTranscriptBuffer}${transcript} `.replace(/\s+/g, ' ');
+                } else {
+                    interimText += `${transcript} `;
+                }
+            }
+            messageInput.value = `${voiceTranscriptBuffer}${interimText}`.trim();
             toggleSendButton();
-            sendMessage(); // Auto-send on voice
-        };
-
-        recognition.onspeechend = () => {
-            recognition.stop();
+            scheduleVoiceAutoSend();
         };
 
         recognition.onend = () => {
-            isRecording = false;
-            voiceBtn.classList.remove('recording');
+            if (voiceManualStop) {
+                isRecording = false;
+                voiceBtn.classList.remove('recording');
+                voiceManualStop = false;
+                return;
+            }
+            if (isRecording) {
+                try {
+                    recognition.start();
+                } catch (_) {
+                    isRecording = false;
+                    voiceBtn.classList.remove('recording');
+                }
+            }
         };
 
         recognition.onerror = (event) => {
             console.error('Speech recognition error', event.error);
             isRecording = false;
             voiceBtn.classList.remove('recording');
+            clearVoiceSilenceTimer();
 
             let msg = "Speech recognition error: " + event.error;
             if (event.error === 'not-allowed') {
                 msg = "Microphone access denied. Please allow microphone permissions in your browser settings.";
             } else if (event.error === 'service-not-allowed') {
                 msg = "Speech service not allowed. Ensure you have internet connection (Chrome uses Google servers).";
+            } else if (event.error === 'no-speech') {
+                return;
             }
             alert(msg);
         };
@@ -602,7 +1115,7 @@ function toggleRecording() {
             alert("Could not start recognition: " + e.message);
         }
     } else {
-        if (recognition) recognition.stop();
+        stopVoiceRecognition(true);
     }
 }
 
@@ -847,4 +1360,4 @@ if (typeof window.setConnected === 'function') {
 
 console.log('ProjectForge initialized successfully! Ready for Python backend integration.');
 checkHealth();
-
+initTheme();

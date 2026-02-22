@@ -1,0 +1,2963 @@
+{
+  "sessions": [
+    {
+      "id": "46ca10a3",
+      "title": "Clinical Session 46ca10a3",
+      "created_at": "2026-02-22T01:01:15.067169+00:00",
+      "updated_at": "2026-02-22T01:01:15.068767+00:00",
+      "transcript": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "transcript_original": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "transcript_normalized_en": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sweating",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "left arm pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 180,
+          "blood_pressure_diastolic": 110,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features",
+          "Severely elevated systolic blood pressure"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "dce2af5b",
+      "title": "Clinical Session dce2af5b",
+      "created_at": "2026-02-22T01:01:15.070940+00:00",
+      "updated_at": "2026-02-22T01:01:15.072730+00:00",
+      "transcript": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_original": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_normalized_en": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "shortness of breath",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 150,
+          "blood_pressure_diastolic": 95,
+          "heart_rate": 102,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "ECG",
+            "Troponin",
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "88a65c46",
+      "title": "Clinical Session 88a65c46",
+      "created_at": "2026-02-22T01:01:15.075455+00:00",
+      "updated_at": "2026-02-22T01:01:15.077403+00:00",
+      "transcript": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "transcript_original": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "transcript_normalized_en": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "1b8377fa",
+      "title": "Clinical Session 1b8377fa",
+      "created_at": "2026-02-22T01:01:15.079791+00:00",
+      "updated_at": "2026-02-22T01:01:15.081824+00:00",
+      "transcript": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "transcript_original": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "transcript_normalized_en": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sweating",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "left arm pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 180,
+          "blood_pressure_diastolic": 110,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features",
+          "Severely elevated systolic blood pressure"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "835de1d1",
+      "title": "Clinical Session 835de1d1",
+      "created_at": "2026-02-22T01:01:15.085473+00:00",
+      "updated_at": "2026-02-22T01:01:15.087553+00:00",
+      "transcript": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_original": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_normalized_en": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "shortness of breath",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 150,
+          "blood_pressure_diastolic": 95,
+          "heart_rate": 102,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "ECG",
+            "Troponin",
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "23dfafd4",
+      "title": "Clinical Session 23dfafd4",
+      "created_at": "2026-02-22T01:01:15.094036+00:00",
+      "updated_at": "2026-02-22T01:01:15.099040+00:00",
+      "transcript": "Doctor: ...\nPatient: ...",
+      "transcript_original": "Doctor: ...\nPatient: ...",
+      "transcript_normalized_en": "Doctor: ...\nPatient: ...",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "outpatient",
+        "patient": {
+          "patient_id": null,
+          "age": 45,
+          "gender": "male",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": "2 hours",
+          "severity": "moderate"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": "2 hours",
+            "severity": "moderate",
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 140,
+          "blood_pressure_diastolic": 90,
+          "heart_rate": 88,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": []
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.8,
+        "missing_data": []
+      }
+    },
+    {
+      "id": "0c98c2f6",
+      "title": "Clinical Session 0c98c2f6",
+      "created_at": "2026-02-22T01:01:15.102836+00:00",
+      "updated_at": "2026-02-22T01:01:15.105264+00:00",
+      "transcript": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "transcript_original": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "transcript_normalized_en": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "74c5839f",
+      "title": "Clinical Session 74c5839f",
+      "created_at": "2026-02-22T01:02:37.691754+00:00",
+      "updated_at": "2026-02-22T01:02:37.693964+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "ec273ed7",
+      "title": "Clinical Session ec273ed7",
+      "created_at": "2026-02-22T01:02:55.687155+00:00",
+      "updated_at": "2026-02-22T01:02:55.689698+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "7e62acca",
+      "title": "Clinical Session 7e62acca",
+      "created_at": "2026-02-22T01:03:04.228186+00:00",
+      "updated_at": "2026-02-22T01:03:04.235081+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "eebc80bf",
+      "title": "Clinical Session eebc80bf",
+      "created_at": "2026-02-22T01:07:10.178327+00:00",
+      "updated_at": "2026-02-22T01:07:10.180660+00:00",
+      "transcript": "Doctor: hello\nPatient: headache",
+      "transcript_original": "Doctor: hello\nPatient: headache",
+      "transcript_normalized_en": "Doctor: hello\nPatient: headache",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "headache",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "863632cd",
+      "title": "Clinical Session 863632cd",
+      "created_at": "2026-02-22T01:07:10.183667+00:00",
+      "updated_at": "2026-02-22T01:07:10.186453+00:00",
+      "transcript": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_original": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_normalized_en": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "shortness of breath",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 150,
+          "blood_pressure_diastolic": 95,
+          "heart_rate": 102,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "ECG",
+            "Troponin",
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "4afea74e",
+      "title": "Clinical Session 4afea74e",
+      "created_at": "2026-02-22T01:07:10.190857+00:00",
+      "updated_at": "2026-02-22T01:07:10.196383+00:00",
+      "transcript": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "transcript_original": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "transcript_normalized_en": "Doctor: BP 180/110 and chest pain. Patient: sweating and left arm pain.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sweating",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "left arm pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 180,
+          "blood_pressure_diastolic": 110,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features",
+          "Severely elevated systolic blood pressure"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "86d8c1c5",
+      "title": "Clinical Session 86d8c1c5",
+      "created_at": "2026-02-22T01:07:10.200109+00:00",
+      "updated_at": "2026-02-22T01:07:10.203512+00:00",
+      "transcript": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_original": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "transcript_normalized_en": "Doctor: What brings you in today?\nPatient: I have chest pain and shortness of breath.\nDoctor: BP is 150/95 and heart rate 102.\nDoctor: We will order ECG and troponin and follow up tomorrow.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "shortness of breath",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 150,
+          "blood_pressure_diastolic": 95,
+          "heart_rate": 102,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "ECG",
+            "Troponin",
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "0cdb04c8",
+      "title": "Clinical Session 0cdb04c8",
+      "created_at": "2026-02-22T01:07:10.211748+00:00",
+      "updated_at": "2026-02-22T01:07:10.214934+00:00",
+      "transcript": "Doctor: ...\nPatient: ...",
+      "transcript_original": "Doctor: ...\nPatient: ...",
+      "transcript_normalized_en": "Doctor: ...\nPatient: ...",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "outpatient",
+        "patient": {
+          "patient_id": null,
+          "age": 45,
+          "gender": "male",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": "2 hours",
+          "severity": "moderate"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": "2 hours",
+            "severity": "moderate",
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": 140,
+          "blood_pressure_diastolic": 90,
+          "heart_rate": 88,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": []
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.8,
+        "missing_data": []
+      }
+    },
+    {
+      "id": "3bc47173",
+      "title": "Clinical Session 3bc47173",
+      "created_at": "2026-02-22T01:07:10.219777+00:00",
+      "updated_at": "2026-02-22T01:07:10.222810+00:00",
+      "transcript": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "transcript_original": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "transcript_normalized_en": "Doctor: What brings you in?\nPatient: Chest pain for two hours.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "1bc3997d",
+      "title": "Clinical Session 1bc3997d",
+      "created_at": "2026-02-22T01:09:30.215259+00:00",
+      "updated_at": "2026-02-22T01:09:30.219346+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "4fc9694c",
+      "title": "Clinical Session 4fc9694c",
+      "created_at": "2026-02-22T01:18:28.938812+00:00",
+      "updated_at": "2026-02-22T01:18:28.943632+00:00",
+      "transcript": "Doctor: Hello. You look uncomfortable\u2014what\u2019s going on?\n\nPatient: Doctor, I\u2019ve been having severe chest pain since this morning. It started suddenly and hasn\u2019t gone away.\n\nDoctor: Can you describe the pain for me? Is it sharp, dull, or pressure-like?\n\nPatient: It feels like a heavy pressure on my chest, and sometimes it spreads to my left arm.\n\nDoctor: Are you experiencing shortness of breath?\n\nPatient: Yes, I feel breathless even when I\u2019m sitting still. I also feel dizzy and a bit nauseous.\n\nDoctor: Have you been sweating more than usual?\n\nPatient: Yes, I\u2019ve been sweating a lot, even though it\u2019s not hot.\n\nDoctor: This is serious. I\u2019m going to run an ECG immediately and check your vital signs. We\u2019ll also arrange blood tests to rule out any heart-related issues.\n\nPatient: Okay, doctor. I\u2019m really scared.\n\nDoctor: You did the right thing by coming in quickly. We\u2019ll take care of you.",
+      "transcript_original": "Doctor: Hello. You look uncomfortable\u2014what\u2019s going on?\n\nPatient: Doctor, I\u2019ve been having severe chest pain since this morning. It started suddenly and hasn\u2019t gone away.\n\nDoctor: Can you describe the pain for me? Is it sharp, dull, or pressure-like?\n\nPatient: It feels like a heavy pressure on my chest, and sometimes it spreads to my left arm.\n\nDoctor: Are you experiencing shortness of breath?\n\nPatient: Yes, I feel breathless even when I\u2019m sitting still. I also feel dizzy and a bit nauseous.\n\nDoctor: Have you been sweating more than usual?\n\nPatient: Yes, I\u2019ve been sweating a lot, even though it\u2019s not hot.\n\nDoctor: This is serious. I\u2019m going to run an ECG immediately and check your vital signs. We\u2019ll also arrange blood tests to rule out any heart-related issues.\n\nPatient: Okay, doctor. I\u2019m really scared.\n\nDoctor: You did the right thing by coming in quickly. We\u2019ll take care of you.",
+      "transcript_normalized_en": "Doctor: Hello. You look uncomfortable\u2014what\u2019s going on?\n\nPatient: Doctor, I\u2019ve been having severe chest pain since this morning. It started suddenly and hasn\u2019t gone away.\n\nDoctor: Can you describe the pain for me? Is it sharp, dull, or pressure-like?\n\nPatient: It feels like a heavy pressure on my chest, and sometimes it spreads to my left arm.\n\nDoctor: Are you experiencing shortness of breath?\n\nPatient: Yes, I feel breathless even when I\u2019m sitting still. I also feel dizzy and a bit nauseous.\n\nDoctor: Have you been sweating more than usual?\n\nPatient: Yes, I\u2019ve been sweating a lot, even though it\u2019s not hot.\n\nDoctor: This is serious. I\u2019m going to run an ECG immediately and check your vital signs. We\u2019ll also arrange blood tests to rule out any heart-related issues.\n\nPatient: Okay, doctor. I\u2019m really scared.\n\nDoctor: You did the right thing by coming in quickly. We\u2019ll take care of you.",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "chest pain",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "chest pain",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "shortness of breath",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sweating",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [
+            "suddenly and hasn",
+            "my chest"
+          ],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "ECG",
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [
+          "Chest pain with potential cardiac warning features"
+        ],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis"
+        ]
+      }
+    },
+    {
+      "id": "f2c7b637",
+      "title": "Clinical Session f2c7b637",
+      "created_at": "2026-02-22T03:05:27.458192+00:00",
+      "updated_at": "2026-02-22T03:05:27.464567+00:00",
+      "transcript": "extract structured data from a consult transcript",
+      "transcript_original": "extract structured data from a consult transcript",
+      "transcript_normalized_en": "extract structured data from a consult transcript",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "consult reason not clearly stated",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "11f4359f",
+      "title": "Clinical Session 11f4359f",
+      "created_at": "2026-02-22T03:32:29.411077+00:00",
+      "updated_at": "2026-02-22T03:32:29.416982+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "833f67f8",
+      "title": "Clinical Session 833f67f8",
+      "created_at": "2026-02-22T03:35:48.544490+00:00",
+      "updated_at": "2026-02-22T03:35:48.552377+00:00",
+      "transcript": "hello Google integriDoctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "hello Google integriDoctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "hello Google integriDoctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "32efffa2",
+      "title": "Clinical Session 32efffa2",
+      "created_at": "2026-02-22T03:50:01.221492+00:00",
+      "updated_at": "2026-02-22T03:50:01.226251+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "365f074b",
+      "title": "Clinical Session 365f074b",
+      "created_at": "2026-02-22T03:54:32.215017+00:00",
+      "updated_at": "2026-02-22T03:54:32.220137+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "2eae9de8",
+      "title": "Clinical Session 2eae9de8",
+      "created_at": "2026-02-22T04:01:36.851453+00:00",
+      "updated_at": "2026-02-22T04:01:36.856282+00:00",
+      "transcript": "Doctor: ... Patient: ...",
+      "transcript_original": "Doctor: ... Patient: ...",
+      "transcript_normalized_en": "Doctor: ... Patient: ...",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "consult reason not clearly stated",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "44c790af",
+      "title": "Clinical Session 44c790af",
+      "created_at": "2026-02-22T04:01:55.152566+00:00",
+      "updated_at": "2026-02-22T04:01:55.158712+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "f2b9b559",
+      "title": "Clinical Session f2b9b559",
+      "created_at": "2026-02-22T04:03:37.538224+00:00",
+      "updated_at": "2026-02-22T04:03:37.547713+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "5725daeb",
+      "title": "Clinical Session 5725daeb",
+      "created_at": "2026-02-22T04:05:03.005205+00:00",
+      "updated_at": "2026-02-22T04:05:03.010189+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today? Patient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days. Doctor: I\u2019m sorry to hear that. What symptoms have you been experiencing? Patient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting. Doctor: Have you noticed any coughing or difficulty breathing? Patient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing. Doctor: Any body aches or loss of appetite? Patient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual. Doctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "71303ccb",
+      "title": "Clinical Session 71303ccb",
+      "created_at": "2026-02-22T04:09:54.410237+00:00",
+      "updated_at": "2026-02-22T04:09:54.419650+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "bb6b0557",
+      "title": "Clinical Session bb6b0557",
+      "created_at": "2026-02-22T04:17:11.438448+00:00",
+      "updated_at": "2026-02-22T04:17:11.443815+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "936915cc",
+      "title": "Clinical Session 936915cc",
+      "created_at": "2026-02-22T04:17:29.719880+00:00",
+      "updated_at": "2026-02-22T04:17:29.726376+00:00",
+      "transcript": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_original": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "transcript_normalized_en": "Doctor: Good morning. What brings you in today?\n\nPatient: Good morning, doctor. I\u2019ve been feeling unwell for the past three days.\n\nDoctor: I\u2019m sorry to hear that. What symptoms have you been experiencing?\n\nPatient: I\u2019ve had a persistent headache, a sore throat, and a mild fever. I also feel very tired, even after resting.\n\nDoctor: Have you noticed any coughing or difficulty breathing?\n\nPatient: Yes, I\u2019ve developed a dry cough since yesterday, but no trouble breathing.\n\nDoctor: Any body aches or loss of appetite?\n\nPatient: Yes, I\u2019ve had some body aches, and I\u2019m not eating as much as usual.\n\nDoctor: I see. Have you taken any medication so far?",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "fever",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [
+          {
+            "name": "fever",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "cough",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "headache",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          },
+          {
+            "name": "sore throat",
+            "duration": null,
+            "severity": null,
+            "frequency": null,
+            "notes": null
+          }
+        ],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    },
+    {
+      "id": "9b71cfb4",
+      "title": "Clinical Session 9b71cfb4",
+      "created_at": "2026-02-22T04:26:45.001380+00:00",
+      "updated_at": "2026-02-22T04:26:45.006715+00:00",
+      "transcript": "capture and structured extraction",
+      "transcript_original": "capture and structured extraction",
+      "transcript_normalized_en": "capture and structured extraction",
+      "structured_data": {
+        "encounter_date": null,
+        "encounter_type": "unknown",
+        "patient": {
+          "patient_id": null,
+          "age": null,
+          "gender": "unknown",
+          "occupation": null
+        },
+        "chief_complaint": {
+          "complaint": "consult reason not clearly stated",
+          "duration": null,
+          "severity": "unknown"
+        },
+        "symptoms": [],
+        "vitals": {
+          "blood_pressure_systolic": null,
+          "blood_pressure_diastolic": null,
+          "heart_rate": null,
+          "temperature": null,
+          "respiratory_rate": null,
+          "oxygen_saturation": null,
+          "weight": null,
+          "height": null,
+          "bmi": null
+        },
+        "medical_history": {
+          "conditions": [],
+          "surgeries": [],
+          "allergies": [],
+          "medications": [],
+          "family_history": [],
+          "social_history": null
+        },
+        "physical_exam": {
+          "general_appearance": null,
+          "findings": [],
+          "abnormalities": []
+        },
+        "assessment": {
+          "primary_diagnosis": null,
+          "differential_diagnoses": [],
+          "icd10_codes": [],
+          "clinical_impression": null
+        },
+        "treatment_plan": {
+          "medications_prescribed": [],
+          "procedures": [],
+          "referrals": [],
+          "follow_up": null,
+          "patient_instructions": null,
+          "tests_ordered": [
+            "CT"
+          ]
+        },
+        "clinical_notes": null,
+        "red_flags": [],
+        "confidence_score": 0.35,
+        "missing_data": [
+          "patient.age",
+          "patient.gender",
+          "vitals.blood_pressure",
+          "vitals.heart_rate",
+          "assessment.primary_diagnosis",
+          "medical_history.medications"
+        ]
+      }
+    }
+  ]
+}

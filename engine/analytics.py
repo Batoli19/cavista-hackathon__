@@ -1,3 +1,8 @@
+"""
+Deprecated for clinical demo scope.
+This module is retained for compatibility and is not used by the clinical MVP.
+"""
+
 from typing import List, Dict, Any
 from datetime import date, timedelta, datetime
 

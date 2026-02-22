@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>voiceFirst Clinical - Admin Dashboard</title>
+    <link rel="stylesheet" href="/ui/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="admin-page">
+    <button class="burger-menu" onclick="toggleSidebar()" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-shield-alt"></i>
+            <h3>voiceFirst<span>.admin</span></h3>
+        </div>
+
+        <nav class="admin-menu">
+            <div class="menu-section">
+                <h4>Main</h4>
+                <a href="#" class="menu-item active" data-section="dashboard" onclick="loadAdminSection(event, 'dashboard')">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="menu-item" data-section="users" onclick="loadAdminSection(event, 'users')">
+                    <i class="fas fa-users"></i> User Management
+                </a>
+                <a href="#" class="menu-item" data-section="audit" onclick="loadAdminSection(event, 'audit')">
+                    <i class="fas fa-history"></i> Audit Logs
+                </a>
+                <a href="#" class="menu-item" data-section="security" onclick="loadAdminSection(event, 'security')">
+                    <i class="fas fa-lock"></i> Security
+                </a>
+            </div>
+            <div class="menu-section">
+                <h4>Workspace</h4>
+                <a href="/ui/" class="menu-item">
+                    <i class="fas fa-comments"></i> Clinical Console
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="admin-content" id="mainContent">
+        <header class="dashboard-header">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p class="date" id="todayText"></p>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">5</span>
+                </button>
+                <div class="user-menu" onclick="toggleAdminMenu()">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=1D4ED8&color=fff&size=36" alt="Admin">
+                    <div>
+                        <strong>Admin User</strong>
+                        <small>System Administrator</small>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu" id="adminDropdown">
+                        <a href="#" onclick="event.stopPropagation(); toast('Profile view coming soon');">My Profile</a>
+                        <a href="#" onclick="event.stopPropagation(); toast('System settings coming soon');">System Settings</a>
+                        <a href="#" onclick="event.stopPropagation(); toast('Audit export coming soon');">Export Audit</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="adminContent">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-user-md"></i>
+                    <div><span class="stat-value">24</span><span class="stat-label">Active Doctors</span></div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div><span class="stat-value">1,284</span><span class="stat-label">Patients</span></div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <div><span class="stat-value">342</span><span class="stat-label">Appointments Today</span></div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-database"></i>
+                    <div><span class="stat-value">98.5%</span><span class="stat-label">System Uptime</span></div>
+                </div>
+            </div>
+
+            <section class="panel live-panel">
+                <h2><i class="fas fa-stethoscope"></i> Live Patient Insights</h2>
+                <div class="live-controls">
+                    <input id="sessionInput" type="text" placeholder="Enter session id (e.g. 8304f62c)">
+                    <button onclick="loadSelectedSession()">Load Session</button>
+                    <button onclick="loadLatestSession()">Load Latest</button>
+                </div>
+                <div id="liveStatus" class="live-status">Waiting for session selection...</div>
+                <div class="live-grid">
+                    <div class="live-card">
+                        <span class="label">Risk Tier</span>
+                        <span class="value" id="liveRiskTier">-</span>
+                    </div>
+                    <div class="live-card">
+                        <span class="label">Red Flags</span>
+                        <span class="value" id="liveRedFlags">-</span>
+                    </div>
+                    <div class="live-card">
+                        <span class="label">Top Differential</span>
+                        <span class="value small" id="liveDifferential">-</span>
+                    </div>
+                    <div class="live-card">
+                        <span class="label">Confidence</span>
+                        <span class="value" id="liveConfidence">-</span>
+                    </div>
+                </div>
+                <div class="live-symptoms">
+                    <h3>Symptoms + Severity</h3>
+                    <ul id="liveSymptoms">
+                        <li>No patient loaded.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="panel-grid">
+                <section class="panel">
+                    <h2><i class="fas fa-heartbeat"></i> System Health</h2>
+                    <div class="health-grid">
+                        <div class="health-item"><span>Database</span><span class="health-status healthy">Connected</span></div>
+                        <div class="health-item"><span>AI Service</span><span class="health-status healthy">Operational</span></div>
+                        <div class="health-item"><span>Voice Service</span><span class="health-status warning">High latency</span></div>
+                        <div class="health-item"><span>Storage</span><span class="health-status healthy">64% used</span></div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <h2><i class="fas fa-shield-alt"></i> Compliance Snapshot</h2>
+                    <div class="kpi-list">
+                        <div><span>HIPAA audit events (24h)</span><strong>178</strong></div>
+                        <div><span>Abnormal access attempts</span><strong class="warn">3</strong></div>
+                        <div><span>Record export actions</span><strong>29</strong></div>
+                        <div><span>Encryption status</span><strong class="ok">Enabled</strong></div>
+                    </div>
+                </section>
+            </div>
+
+            <section class="panel">
+                <h2><i class="fas fa-history"></i> Recent Activity</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Time</th><th>User</th><th>Action</th><th>Status</th><th>IP</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>10:32</td><td>Dr. Sarah Wilson</td><td>Patient access - John Doe</td><td><span class="pill success">Completed</span></td><td>192.168.1.45</td></tr>
+                            <tr><td>10:28</td><td>Dr. Michael Chen</td><td>Prescription update</td><td><span class="pill success">Completed</span></td><td>192.168.1.67</td></tr>
+                            <tr><td>10:15</td><td>Nurse Jane Smith</td><td>Vitals recorded</td><td><span class="pill success">Completed</span></td><td>192.168.1.89</td></tr>
+                            <tr><td>09:58</td><td>System</td><td>Database backup</td><td><span class="pill info">Completed</span></td><td>localhost</td></tr>
+                            <tr><td>09:45</td><td>Dr. Emily Brown</td><td>Failed login attempt</td><td><span class="pill warning">Failed</span></td><td>192.168.1.156</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <aside class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3>System Notifications</h3>
+            <button class="icon-btn" onclick="hideNotifications()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="notification-list">
+            <div class="notification-item critical"><i class="fas fa-exclamation-circle"></i><div><p>Voice service latency > 500ms</p><small>2 min ago</small></div></div>
+            <div class="notification-item warning"><i class="fas fa-exclamation-triangle"></i><div><p>Backup size threshold exceeded</p><small>15 min ago</small></div></div>
+            <div class="notification-item info"><i class="fas fa-info-circle"></i><div><p>3 doctors pending verification</p><small>1 hour ago</small></div></div>
+        </div>
+    </aside>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const dashboardHTML = document.getElementById('adminContent').innerHTML;
+        const sectionTemplates = {
+            dashboard: dashboardHTML,
+            users: '<section class="panel"><h2><i class="fas fa-users"></i> User Management</h2><p>Manage doctors, nurses, and patient accounts from this panel.</p></section>',
+            audit: '<section class="panel"><h2><i class="fas fa-history"></i> Audit Logs</h2><p>Review access history, record updates, and export events.</p></section>',
+            security: '<section class="panel"><h2><i class="fas fa-lock"></i> Security</h2><p>Configure session policies, MFA requirements, and risk alerts.</p></section>'
+        };
+
+        function setDate() {
+            const dt = new Date();
+            document.getElementById('todayText').textContent = dt.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function toggleAdminMenu() {
+            document.getElementById('adminDropdown').classList.toggle('show');
+        }
+
+        function showNotifications() {
+            document.getElementById('notificationPanel').classList.add('open');
+        }
+
+        function hideNotifications() {
+            document.getElementById('notificationPanel').classList.remove('open');
+        }
+
+        function loadAdminSection(event, section) {
+            event.preventDefault();
+            document.querySelectorAll('.menu-item').forEach((el) => el.classList.remove('active'));
+            const target = event.currentTarget;
+            if (target.classList.contains('menu-item')) target.classList.add('active');
+            document.getElementById('adminContent').innerHTML = sectionTemplates[section] || sectionTemplates.dashboard;
+            if (window.innerWidth < 980) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        function toast(text) {
+            const el = document.getElementById('toast');
+            el.textContent = text || 'Done';
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 1400);
+        }
+
+        function parseLatestSessionId(showText) {
+            const text = String(showText || '');
+            const lines = text.split('\n');
+            for (const line of lines) {
+                const m = line.match(/-\s*([a-zA-Z0-9_-]{4,64})\s*:/);
+                if (m) return m[1];
+            }
+            return '';
+        }
+
+        async function callCommand(command) {
+            const resp = await fetch('/api/command', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command, files: [] })
+            });
+            return await resp.json();
+        }
+
+        function setLiveStatus(text, variant) {
+            const el = document.getElementById('liveStatus');
+            if (!el) return;
+            el.textContent = text;
+            el.className = 'live-status' + (variant ? ` ${variant}` : '');
+        }
+
+        function renderSymptoms(structured) {
+            const ul = document.getElementById('liveSymptoms');
+            if (!ul) return;
+            const symptoms = (structured && structured.symptoms) ? structured.symptoms : [];
+            if (!symptoms.length) {
+                ul.innerHTML = '<li>No symptoms captured.</li>';
+                return;
+            }
+            ul.innerHTML = symptoms.map((s) => {
+                const name = s && s.name ? s.name : 'unknown symptom';
+                const sev = s && s.severity ? s.severity : 'unknown';
+                const sevClass = sev === 'severe' ? 'danger' : sev === 'moderate' ? 'warning' : sev === 'mild' ? 'success' : 'info';
+                return `<li><span>${name}</span> <span class="pill ${sevClass}">${sev}</span></li>`;
+            }).join('');
+        }
+
+        function renderLiveInsights(insightsData, sessionId) {
+            const diagnosis = (insightsData && insightsData.diagnosis_support) || {};
+            const analytics = (insightsData && insightsData.analytics) || {};
+            const structured = (insightsData && insightsData.structured_data) || {};
+            const tier = String(diagnosis.risk_tier || 'low');
+            const red = Number(((analytics.red_flag_summary || {}).count) || 0);
+            const diff = ((diagnosis.differential_diagnoses || [])[0]) || 'not captured';
+            const confCard = (analytics.summary_cards || []).find((x) => String(x.label || '').toLowerCase().includes('confidence'));
+            const confVal = confCard ? Math.round((Number(confCard.value) || 0) * 100) + '%' : 'n/a';
+
+            document.getElementById('liveRiskTier').textContent = tier;
+            document.getElementById('liveRedFlags').textContent = String(red);
+            document.getElementById('liveDifferential').textContent = String(diff);
+            document.getElementById('liveConfidence').textContent = confVal;
+            renderSymptoms(structured);
+            setLiveStatus(`Loaded live data for session ${sessionId}.`, tier === 'high' ? 'danger' : tier === 'medium' ? 'warning' : 'success');
+        }
+
+        async function loadInsightsForSession(sessionId) {
+            if (!sessionId) {
+                setLiveStatus('Missing session id.', 'warning');
+                return;
+            }
+            setLiveStatus(`Loading insights for ${sessionId}...`);
+            try {
+                const cmd = `generate insights for session id: ${sessionId}`;
+                const resp = await callCommand(cmd);
+                const insights = (((resp || {}).meta || {}).payload || {}).insights;
+                if (!insights) {
+                    setLiveStatus('Insights payload not returned for this session.', 'warning');
+                    return;
+                }
+                renderLiveInsights(insights, sessionId);
+            } catch (err) {
+                setLiveStatus('Failed to load insights from server.', 'danger');
+            }
+        }
+
+        async function loadLatestSession() {
+            setLiveStatus('Loading latest session...');
+            try {
+                const listResp = await callCommand('list sessions');
+                const latest = parseLatestSessionId(listResp.show_text);
+                if (!latest) {
+                    setLiveStatus('No sessions found yet. Run a clinical extraction first.', 'warning');
+                    return;
+                }
+                const input = document.getElementById('sessionInput');
+                if (input) input.value = latest;
+                await loadInsightsForSession(latest);
+            } catch (err) {
+                setLiveStatus('Could not load latest session.', 'danger');
+            }
+        }
+
+        async function loadSelectedSession() {
+            const input = document.getElementById('sessionInput');
+            const sessionId = input ? input.value.trim() : '';
+            await loadInsightsForSession(sessionId);
+        }
+
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('adminDropdown');
+            const userMenu = document.querySelector('.user-menu');
+            if (dropdown && userMenu && !userMenu.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        setDate();
+        loadLatestSession();
+    </script>
+</body>
+</html>

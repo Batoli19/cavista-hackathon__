@@ -55,6 +55,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().__init__(*args, directory=DIRECTORY, **kwargs)
 
     def do_GET(self):
+        if self.path.startswith("/ui/"):
+            # Alias /ui/* -> static files under DIRECTORY for predictable asset URLs.
+            self.path = self.path[len("/ui"):]
         if self.path == "/api/health":
             export_deps = {
                 "python_docx": importlib.util.find_spec("docx") is not None,
@@ -125,8 +128,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         }
                     )
                 response["files"] = normalized_files
+                intent = ((response.get("meta") or {}).get("intent")) if isinstance(response, dict) else None
+                action = response.get("action") if isinstance(response, dict) else None
                 preview = (response.get("show_text", "") or "").replace("\n", " ")
                 preview = preview[:140] + ("..." if len(preview) > 140 else "")
+                print(f"[Server] Intent: {intent or 'unknown'} | Action: {action or 'n/a'}")
                 print(f"[Server] Reply: {preview}")
                 
                 self.send_response(200)

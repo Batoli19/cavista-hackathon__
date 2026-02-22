@@ -1,5 +1,7 @@
 """
-AI plan generation with resilient model fallback and short-lived cache.
+Deprecated for clinical demo scope.
+This module is kept only for backward compatibility and is not used by the
+clinical session MVP flow.
 """
 
 from __future__ import annotations

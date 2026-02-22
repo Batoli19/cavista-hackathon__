@@ -1,2082 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Forge - AI Project Manager</title>
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
 :root {
-    /* Color Palette - Refined Editorial */
-    --color-primary: #1a1a1a;
-    --color-secondary: #2d2d2d;
-    --color-accent: #d4a373;
-    --color-accent-hover: #c99966;
-    --color-background: #fafaf8;
-    --color-surface: #ffffff;
-    --color-border: #e8e8e5;
-    --color-text-primary: #1a1a1a;
-    --color-text-secondary: #666666;
-    --color-text-tertiary: #999999;
-    --color-success: #4a7c59;
-    --color-ai-gradient: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-    
-    /* Spacing */
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 0.75rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-    
-    /* Typography */
-    --font-display: 'Crimson Pro', serif;
-    --font-body: 'DM Sans', sans-serif;
-    
-    /* Borders */
-    --border-radius-sm: 8px;
-    --border-radius-md: 12px;
-    --border-radius-lg: 16px;
-    
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --primary: #5B6CFF;
+    --accent: #00C2A8;
+    --danger: #FF4D6D;
+    --warning: #FFB020;
+    --bg: #0F172A;
+    --surface: #1E293B;
+    --soft: #334155;
+    --text: #E2E8F0;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
-    font-family: var(--font-body);
-    background: var(--color-background);
-    color: var(--color-text-primary);
-    overflow: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.app-container {
+    background: var(--bg);
+    color: var(--text);
     display: flex;
-    height: 100vh;
-    overflow: hidden;
 }
 
-/* ===== SIDEBAR ===== */
+/* Sidebar */
 .sidebar {
-    width: 280px;
-    bafunction updateClockText(){
-    const n = new Date();
-    const t = n.toTimeString().slice(0,8);
-    const el = document.getElementById('clockText');
-    if(el) el.textContent = t;
-}
-setInterval(updateClockText, 1000);
-updateClockText();
-
-
-// DOM Elements
-const messageInput = document.getElementById('messageInput');
-const sendBtn = document.getElementById('sendBtn');
-const messagesArea = document.getElementById('messagesArea');
-const voiceBtn = document.getElementById('voiceBtn');
-const imageUploadBtn = document.getElementById('imageUploadBtn');
-const imageInput = document.getElementById('imageInput');
-const fileUploadBtn = document.getElementById('fileUploadBtn');
-const fileInput = document.getElementById('fileInput');
-const attachmentsPreview = document.getElementById('attachmentsPreview');
-const newProjectBtn = document.querySelector('.new-project-btn');
-const quickActionCards = document.querySelectorAll('.quick-action-card');
-
-// State
-let isRecording = false;
-let mediaRecorder = null;
-let audioChunks = [];
-let attachedFiles = [];
-
-// ===== Backend (Jarvis server) =====
-const SERVER = 'http://localhost:7878';
-const statusText = document.getElementById('statusText');
-const connectionDot = document.getElementById('connectionDot');
-const connDot = document.getElementById('connDot');
-const connText = document.getElementById('connText');
-
-async function checkServer(){
-    try{
-        const r = await fetch(SERVER + '/ping', { signal: AbortSignal.timeout(2000) });
-        const d = await r.json();
-        if(d && d.status === 'online'){
-            setConnected(true);
-            return true;
-        }
-        setConnected(false);
-        return false;
-    }catch(e){
-        setConnected(false);
-        return false;
-    }
-}
-
-function setConnected(isOnline){
-    if(isOnline){
-        statusText.textContent = 'Server Connected';
-        connectionDot.classList.remove('offline'); connectionDot.classList.add('online');
-        connDot.classList.remove('offline'); connDot.classList.add('online');
-        connText.textContent = 'Online';
-    }else{
-        statusText.textContent = 'Server Offline';
-        connectionDot.classList.remove('online'); connectionDot.classList.add('offline');
-        connDot.classList.remove('online'); connDot.classList.add('offline');
-        connText.textContent = 'Offline';
-    }
-}
-
-async function askJarvis(userText){
-    setConnected(true); // optimistic while sending
-    statusText.textContent = 'Processing…';
-
-    // typing indicator
-    const typingId = addTypingIndicator();
-
-    try{
-        const res = await fetch(SERVER + '/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: userText }),
-            signal: AbortSignal.timeout(30000),
-        });
-
-        // Read as text first (server might return JSON OR plain text)
-        const raw = await res.text();
-
-        // If server returned an HTTP error, surface the body
-        if(!res.ok){
-            throw new Error(`HTTP ${res.status}: ${raw || res.statusText}`);
-        }
-
-        let data = null;
-        try{
-            data = raw ? JSON.parse(raw) : null;
-        }catch(_){
-            data = null;
-        }
-removeTypingIndicator(typingId);
-
-        if(data && data.error){
-            addMessage('assistant', '⚠ ' + data.error);
-            statusText.textContent = 'Error';
-            return;
-        }
-
-        // Accept a variety of server response shapes:
-// - JSON: { reply: "..." }  (preferred)
-// - JSON: { response: "..." } or { message: "..." } or { text: "..." }
-// - JSON: { data: { reply: "..." } }
-// - Plain text response body
-let replyText = '';
-if(data){
-    replyText =
-        (typeof data.reply === 'string' ? data.reply :
-        typeof data.response === 'string' ? data.response :
-        typeof data.message === 'string' ? data.message :
-        typeof data.text === 'string' ? data.text :
-        (data.data && typeof data.data.reply === 'string') ? data.data.reply :
-        (data.data && typeof data.data.response === 'string') ? data.data.response :
-        '');
-}else{
-    replyText = raw || '';
-}
-
-// Strip any <action>...</action> tags if your server uses them for tool calls
-const clean = String(replyText).replace(/<action>.*?<\/action>/gs, '').trim();
-addMessage('assistant', clean || 'Done.');
-statusText.textContent = 'Ready';
-        setConnected(true);
-    }catch(e){
-        removeTypingIndicator(typingId);
-        setConnected(false);
-
-        if(e && e.name === 'TimeoutError'){
-            addMessage('assistant', '⚠ Request timed out. Is the server still running?');
-        }else{
-            const msg = (e && (e.message || e.toString())) ? String(e.message || e.toString()) : 'Unknown error';
-            addMessage('assistant',
-                '⚠ Server error / no response. Details: ' + msg +
-                '
-
-Tips: ensure jarvis_server.py is running, and that it returns a response body (JSON or text). ' +
-                'If you opened this UI via file://, your server must allow CORS (Access-Control-Allow-Origin: *).'
-            );
-        }
-        statusText.textContent = 'Disconnected';
-    }
-}
-
-// Auto-resize textarea
-messageInput.addEventListener('input', function() {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
-    toggleSendButton();
-});
-
-// Toggle send button based on input
-function toggleSendButton() {
-    const hasContent = messageInput.value.trim() !== '' || attachedFiles.length > 0;
-    sendBtn.disabled = !hasContent;
-}
-
-// Send message
-sendBtn.addEventListener('click', sendMessage);
-messageInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        if (!sendBtn.disabled) {
-            sendMessage();
-        }
-    }
-});
-
-async function sendMessage() {
-    const text = messageInput.value.trim();
-
-    if (text === '' && attachedFiles.length === 0) return;
-
-    // Hide welcome message if visible
-    const welcomeMessage = document.querySelector('.welcome-message');
-    if (welcomeMessage) {
-        welcomeMessage.style.animation = 'fadeOut 0.3s ease forwards';
-        setTimeout(() => welcomeMessage.remove(), 300);
-    }
-
-    // Create user message (show attachments in UI only)
-    const userMessageDiv = createUserMessage(text, attachedFiles);
-    messagesArea.appendChild(userMessageDiv);
-
-    // Capture attachments then clear UI
-    const sentAttachments = attachedFiles;
-    messageInput.value = '';
-    messageInput.style.height = 'auto';
-    attachedFiles = [];
-    updateAttachmentsPreview();
-    toggleSendButton();
-    scrollToBottom();
-
-    // NOTE: Backend currently receives text only (attachments are UI-only for now)
-    await askJarvis(text || '(attachments sent)');
-}
-
-function createUserMessage(text, files) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message user-message';
-    
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.textContent = 'You';
-    
-    const content = document.createElement('div');
-    content.className = 'message-content';
-    
-    // Add file previews if any
-    if (files.length > 0) {
-        const filesDiv = document.createElement('div');
-        filesDiv.style.marginBottom = '12px';
-        files.forEach(file => {
-            const fileTag = document.createElement('div');
-            fileTag.style.cssText = 'display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 6px; margin-right: 8px; margin-bottom: 8px; font-size: 0.875rem;';
-            fileTag.textContent = file.name;
-            filesDiv.appendChild(fileTag);
-        });
-        content.appendChild(filesDiv);
-    }
-    
-    if (text) {
-        const textP = document.createElement('p');
-        textP.textContent = text;
-        content.appendChild(textP);
-    }
-    
-    messageDiv.appendChild(content);
-    messageDiv.appendChild(avatar);
-    
-    return messageDiv;
-}
-
-function createAIMessage(text) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message ai-message';
-    
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <rect x="4" y="4" width="7" height="7" fill="currentColor" opacity="0.9"/>
-            <rect x="13" y="4" width="7" height="7" fill="currentColor" opacity="0.6"/>
-            <rect x="4" y="13" width="7" height="7" fill="currentColor" opacity="0.6"/>
-            <rect x="13" y="13" width="7" height="7" fill="currentColor" opacity="0.3"/>
-        </svg>
-    `;
-    
-    const content = document.createElement('div');
-    content.className = 'message-content';
-    
-    const textP = document.createElement('p');
-    textP.textContent = text;
-    content.appendChild(textP);
-    
-    messageDiv.appendChild(avatar);
-    messageDiv.appendChild(content);
-    
-    return messageDiv;
-}
-
-
-function scrollToBottom() {
-    messagesArea.scrollTop = messagesArea.scrollHeight;
-}
-
-// Voice Recording
-voiceBtn.addEventListener('click', toggleRecording);
-
-async function toggleRecording() {
-    if (!isRecording) {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            
-            mediaRecorder.ondataavailable = (event) => {
-                audioChunks.push(event.data);
-            };
-            
-            mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                // Here you would send audioBlob to your Python backend for transcription
-                // For now, we'll just add a placeholder
-                addAudioAttachment(audioBlob);
-                
-                // Stop all tracks
-                stream.getTracks().forEach(track => track.stop());
-            };
-            
-            mediaRecorder.start();
-            isRecording = true;
-            voiceBtn.classList.add('recording');
-            
-        } catch (error) {
-            console.error('Error accessing microphone:', error);
-            alert('Could not access microphone. Please check your permissions.');
-        }
-    } else {
-        mediaRecorder.stop();
-        isRecording = false;
-        voiceBtn.classList.remove('recording');
-    }
-}
-
-function addAudioAttachment(audioBlob) {
-    const file = new File([audioBlob], `voice-${Date.now()}.wav`, { type: 'audio/wav' });
-    attachedFiles.push(file);
-    updateAttachmentsPreview();
-    toggleSendButton();
-}
-
-// Image Upload
-imageUploadBtn.addEventListener('click', () => imageInput.click());
-imageInput.addEventListener('change', handleImageUpload);
-
-function handleImageUpload(e) {
-    const files = Array.from(e.target.files);
-    files.forEach(file => {
-        if (file.type.startsWith('image/')) {
-            attachedFiles.push(file);
-        }
-    });
-    updateAttachmentsPreview();
-    toggleSendButton();
-    imageInput.value = '';
-}
-
-// File Upload
-fileUploadBtn.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', handleFileUpload);
-
-function handleFileUpload(e) {
-    const files = Array.from(e.target.files);
-    attachedFiles.push(...files);
-    updateAttachmentsPreview();
-    toggleSendButton();
-    fileInput.value = '';
-}
-
-// Update Attachments Preview
-function updateAttachmentsPreview() {
-    attachmentsPreview.innerHTML = '';
-    
-    attachedFiles.forEach((file, index) => {
-        const attachmentItem = document.createElement('div');
-        attachmentItem.className = 'attachment-item';
-        
-        if (file.type.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            attachmentItem.appendChild(img);
-        } else {
-            const icon = document.createElement('span');
-            icon.textContent = '📄';
-            attachmentItem.appendChild(icon);
-        }
-        
-        const fileName = document.createElement('span');
-        fileName.textContent = file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name;
-        attachmentItem.appendChild(fileName);
-        
-        const removeBtn = document.createElement('span');
-        removeBtn.className = 'attachment-remove';
-        removeBtn.innerHTML = '✕';
-        removeBtn.onclick = () => removeAttachment(index);
-        attachmentItem.appendChild(removeBtn);
-        
-        attachmentsPreview.appendChild(attachmentItem);
-    });
-}
-
-function removeAttachment(index) {
-    attachedFiles.splice(index, 1);
-    updateAttachmentsPreview();
-    toggleSendButton();
-}
-
-// New Project Button
-newProjectBtn.addEventListener('click', () => {
-    // Clear messages and show welcome message
-    messagesArea.innerHTML = `
-        <div class="welcome-message">
-            <div class="welcome-icon">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                    <rect x="8" y="8" width="14" height="14" fill="currentColor" opacity="0.9"/>
-                    <rect x="26" y="8" width="14" height="14" fill="currentColor" opacity="0.6"/>
-                    <rect x="8" y="26" width="14" height="14" fill="currentColor" opacity="0.6"/>
-                    <rect x="26" y="26" width="14" height="14" fill="currentColor" opacity="0.3"/>
-                </svg>
-            </div>
-            <h2>Welcome to ProjectForge</h2>
-            <p>Share your project idea and I'll help you plan, structure, and bring it to life. Upload images, documents, or use voice to get started.</p>
-            
-            <div class="quick-actions">
-                <button class="quick-action-card">
-                    <div class="qa-icon">💡</div>
-                    <div class="qa-title">Start from scratch</div>
-                    <div class="qa-desc">I have a new project idea</div>
-                </button>
-                <button class="quick-action-card">
-                    <div class="qa-icon">📋</div>
-                    <div class="qa-title">Upload documents</div>
-                    <div class="qa-desc">I have project requirements</div>
-                </button>
-                <button class="quick-action-card">
-                    <div class="qa-icon">🎯</div>
-                    <div class="qa-title">Improve existing</div>
-                    <div class="qa-desc">Optimize my current project</div>
-                </button>
-            </div>
-        </div>
-    `;
-    
-    // Re-attach event listeners to new quick action cards
-    attachQuickActionListeners();
-});
-
-// Quick Action Cards
-function attachQuickActionListeners() {
-    const cards = document.querySelectorAll('.quick-action-card');
-    cards.forEach(card => {
-        card.addEventListener('click', function() {
-            const title = this.querySelector('.qa-title').textContent;
-            const prompts = {
-                'Start from scratch': 'I have a new project idea and need help planning it from the ground up.',
-                'Upload documents': 'I have project documentation that I\'d like to discuss and improve.',
-                'Improve existing': 'I have an existing project that I want to optimize and enhance.'
-            };
-            messageInput.value = prompts[title] || '';
-            messageInput.focus();
-            toggleSendButton();
-        });
-    });
-}
-
-attachQuickActionListeners();
-
-// Project Item Click
-document.querySelectorAll('.project-item').forEach(item => {
-    item.addEventListener('click', function() {
-        document.querySelectorAll('.project-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        
-        // Here you would load the project conversation from your Python backend
-        // For now, we'll just clear and show welcome
-        const projectName = this.querySelector('.project-name').textContent;
-        console.log('Loading project:', projectName);
-    });
-});
-
-// Auth buttons
-const signInBtn = document.querySelector('.signin-btn');
-const signUpBtn = document.querySelector('.signup-btn');
-
-if (signInBtn) {
-    signInBtn.addEventListener('click', () => {
-        // TODO: Implement sign-in functionality
-        // This will connect to your Python backend authentication
-        console.log('Sign In clicked');
-        alert('Sign In functionality will be connected to your Python backend');
-    });
-}
-
-if (signUpBtn) {
-    signUpBtn.addEventListener('click', () => {
-        // TODO: Implement sign-up functionality
-        // This will connect to your Python backend authentication
-        console.log('Sign Up clicked');
-        alert('Sign Up functionality will be connected to your Python backend');
-    });
-}
-
-// Mobile sidebar toggle (optional - add hamburger menu if needed)
-const createMobileMenu = () => {
-    if (window.innerWidth <= 768) {
-        // Add mobile menu functionality here if needed
-    }
-};
-
-window.addEventListener('resize', createMobileMenu);
-createMobileMenu();
-
-console.log('ProjectForge initialized successfully! Ready for Python backend integration.');
-
-
-// Right-panel quick commands
-document.querySelectorAll('.rp-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-        const cmd = btn.getAttribute('data-cmd') || btn.textContent.trim();
-        messageInput.value = cmd;
-        messageInput.dispatchEvent(new Event('input'));
-        await sendMessage();
-    });
-});
-
-
-checkServer();
-id var(--color-border);
-    display: flex;
-    flex-direction: column;
-    animation: slideInLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-.sidebar-header {
-    padding: var(--spacing-xl) var(--spacing-lg);
-    border-bottom: 1px solid var(--color-border);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--color-primary);
-}
-
-.logo h1 {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-}
-
-.logo h1 span {
-    color: var(--color-accent);
-}
-
-.sidebar-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--spacing-lg);
-}
-
-.new-project-btn {
-    width: 100%;
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: var(--color-primary);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius-md);
-    font-family: var(--font-body);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    transition: all 0.2s ease;
-    margin-bottom: var(--spacing-xl);
-}
-
-.new-project-btn:hover {
-    background: var(--color-secondary);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-.new-project-btn:active {
-    transform: translateY(0);
-}
-
-.section-title {
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-tertiary);
-    margin-bottom: var(--spacing-md);
-}
-
-.project-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-}
-
-.project-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    animation: fadeInUp 0.3s ease backwards;
-}
-
-.project-item:nth-child(1) { animation-delay: 0.05s; }
-.project-item:nth-child(2) { animation-delay: 0.1s; }
-.project-item:nth-child(3) { animation-delay: 0.15s; }
-.project-item:nth-child(4) { animation-delay: 0.2s; }
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.project-item:hover {
-    background: var(--color-background);
-}
-
-.project-item.active {
-    background: var(--color-background);
-    border-left: 3px solid var(--color-accent);
-}
-
-.project-icon {
-    font-size: 1.25rem;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.project-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.project-name {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--color-text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.project-date {
-    font-size: 0.75rem;
-    color: var(--color-text-tertiary);
-    margin-top: 2px;
-}
-
-.sidebar-footer {
-    padding: var(--spacing-lg);
-    border-top: 1px solid var(--color-border);
-}
-
-.auth-section {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.auth-btn {
-    width: 100%;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border: 2px solid var(--color-border);
-    background: var(--color-surface);
-    color: var(--color-text-primary);
-    border-radius: var(--border-radius-md);
-    font-family: var(--font-body);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    transition: all 0.2s ease;
-}
-
-.auth-btn:hover {
-    background: var(--color-background);
-    border-color: var(--color-accent);
-    transform: translateY(-1px);
-}
-
-.auth-btn:active {
-    transform: translateY(0);
-}
-
-.signin-btn {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-}
-
-.signin-btn:hover {
-    background: var(--color-secondary);
-    border-color: var(--color-secondary);
-}
-
-.signup-btn svg {
-    color: var(--color-accent);
-}
-
-.signup-btn:hover svg {
-    color: var(--color-primary);
-}
-
-/* ===== MAIN CONTENT ===== */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.chat-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.messages-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--spacing-2xl);
-    scroll-behavior: smooth;
-}
-
-/* Welcome Message */
-.welcome-message {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    padding: var(--spacing-2xl) 0;
-    animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.welcome-icon {
-    color: var(--color-accent);
-    margin-bottom: var(--spacing-lg);
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-.welcome-message h2 {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-md);
-    letter-spacing: -0.02em;
-}
-
-.welcome-message p {
-    font-size: 1.125rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin-bottom: var(--spacing-2xl);
-}
-
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-2xl);
-}
-
-.quick-action-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl);
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeInUp 0.5s ease backwards;
-}
-
-.quick-action-card:nth-child(1) { animation-delay: 0.1s; }
-.quick-action-card:nth-child(2) { animation-delay: 0.2s; }
-.quick-action-card:nth-child(3) { animation-delay: 0.3s; }
-
-.quick-action-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--color-accent);
-}
-
-.qa-icon {
-    font-size: 2rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.qa-title {
-    font-family: var(--font-display);
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-xs);
-}
-
-.qa-desc {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-}
-
-/* Messages */
-.message {
-    display: flex;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-xl);
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.user-message {
-    flex-direction: row-reverse;
-}
-
-.message-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-.user-message .message-avatar {
-    background: var(--color-primary);
-    color: white;
-}
-
-.ai-message .message-avatar {
-    background: var(--color-ai-gradient);
-    color: white;
-}
-
-.message-content {
-    max-width: 70%;
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius-lg);
-    line-height: 1.6;
-}
-
-.user-message .message-content {
-    background: var(--color-primary);
-    color: white;
-    border-bottom-right-radius: 4px;
-}
-
-.ai-message .message-content {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    color: var(--color-text-primary);
-    border-top-left-radius: 4px;
-}
-
-/* ===== INPUT AREA ===== */
-.input-area {
-    border-top: 1px solid var(--color-border);
-    background: var(--color-surface);
-    padding: var(--spacing-lg) var(--spacing-2xl);
-}
-
-.attachments-preview {
-    display: flex;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-    flex-wrap: wrap;
-}
-
-.attachment-item {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-md);
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
-    font-size: 0.875rem;
-    animation: scaleIn 0.2s ease;
-}
-
-.attachment-item img {
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.attachment-remove {
-    margin-left: var(--spacing-xs);
-    cursor: pointer;
-    color: var(--color-text-tertiary);
-    transition: color 0.2s ease;
-}
-
-.attachment-remove:hover {
-    color: var(--color-text-primary);
-}
-
-.input-wrapper {
-    display: flex;
-    align-items: flex-end;
-    gap: var(--spacing-sm);
-    background: var(--color-background);
-    border: 2px solid var(--color-border);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-sm);
-    transition: all 0.2s ease;
-}
-
-.input-wrapper:focus-within {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 4px rgba(212, 163, 115, 0.1);
-}
-
-.input-actions-left,
-.input-actions-right {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-}
-
-.action-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: transparent;
-    color: var(--color-text-secondary);
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.action-btn:hover {
-    background: var(--color-border);
-    color: var(--color-text-primary);
-}
-
-.action-btn:active {
-    transform: scale(0.95);
-}
-
-.voice-btn.recording {
-    background: #ef4444;
-    color: white;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-
-.voice-btn.recording .mic-icon {
-    display: none;
-}
-
-.voice-btn.recording .stop-icon {
-    display: block !important;
-}
-
-#messageInput {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-family: var(--font-body);
-    font-size: 0.9375rem;
-    color: var(--color-text-primary);
-    resize: none;
-    outline: none;
-    min-height: 24px;
-    max-height: 200px;
-    line-height: 1.5;
-    padding: var(--spacing-xs) var(--spacing-sm);
-}
-
-#messageInput::placeholder {
-    color: var(--color-text-tertiary);
-}
-
-.send-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: var(--color-primary);
-    color: white;
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.send-btn:hover:not(:disabled) {
-    background: var(--color-accent);
-    transform: scale(1.05);
-}
-
-.send-btn:active:not(:disabled) {
-    transform: scale(0.95);
-}
-
-.send-btn:disabled {
-    background: var(--color-border);
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.input-footer {
-    margin-top: var(--spacing-sm);
-    text-align: center;
-}
-
-.footer-text {
-    font-size: 0.75rem;
-    color: var(--color-text-tertiary);
-}
-
-/* ===== SCROLLBAR ===== */
-.messages-area::-webkit-scrollbar,
-.sidebar-content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.messages-area::-webkit-scrollbar-track,
-.sidebar-content::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.messages-area::-webkit-scrollbar-thumb,
-.sidebar-content::-webkit-scrollbar-thumb {
-    background: var(--color-border);
-    border-radius: 3px;
-}
-
-.messages-area::-webkit-scrollbar-thumb:hover,
-.sidebar-content::-webkit-scrollbar-thumb:hover {
-    background: var(--color-text-tertiary);
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .sidebar {
-        position: fixed;
-        left: -280px;
-        top: 0;
-        height: 100vh;
-        z-index: 100;
-        transition: left 0.3s ease;
-    }
-    
-    .sidebar.open {
-        left: 0;
-    }
-    
-    .main-content {
-        width: 100%;
-    }
-    
-    .messages-area {
-        padding: var(--spacing-lg);
-    }
-    
-    .input-area {
-        padding: var(--spacing-md);
-    }
-    
-    .message-content {
-        max-width: 85%;
-    }
-    
-    .welcome-message h2 {
-        font-size: 2rem;
-    }
-    
-    .quick-actions {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* Added from script.js (was injected dynamically) */
-@keyframes fadeOut {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.95); }
-}
-
-
-
-/* ===== RIGHT PANEL (Jarvis-style quick access, ProjectForge palette) ===== */
-.right-panel{
     width: 260px;
-    background: var(--color-surface);
-    border-left: 1px solid var(--color-border);
-    display:flex;
-    flex-direction:column;
-    padding: var(--spacing-lg);
-    gap: var(--spacing-lg);
-    overflow:auto;
-    animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(20px);
+    height: 100vh;
+    padding: 30px 20px;
+    border-right: 1px solid rgba(255,255,255,0.05);
 }
-@keyframes slideInRight{
-    from{ transform: translateX(18px); opacity:0; }
-    to{ transform: translateX(0); opacity:1; }
-}
-.right-panel-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap: var(--spacing-sm);
-}
-.right-panel-header h3{
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    color: var(--color-text-primary);
+
+.sidebar h2 {
+    margin-bottom: 40px;
     font-weight: 600;
-}
-.conn-pill{
-    display:flex;
-    align-items:center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.6rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    background: var(--color-background);
-}
-.conn-dot{
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--color-text-tertiary);
-}
-.conn-dot.online{ background: var(--color-success); }
-.conn-dot.offline{ background: #c0392b; }
-
-.right-panel-section{
-    display:flex;
-    flex-direction:column;
-    gap: var(--spacing-xs);
-}
-.rp-title{
-    font-size: 0.8rem;
-    color: var(--color-text-tertiary);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 0.25rem;
-}
-.rp-btn{
-    width:100%;
-    text-align:left;
-    border:1px solid var(--color-border);
-    background: var(--color-surface);
-    padding: 0.7rem 0.8rem;
-    border-radius: var(--border-radius-sm);
-    cursor:pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    color: var(--color-text-primary);
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-}
-.rp-btn:hover{
-    border-color: rgba(212,163,115,0.65);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-1px);
-}
-.rp-btn:active{ transform: translateY(0); }
-
-.right-panel-footer{
-    margin-top:auto;
-    padding-top: var(--spacing-md);
-    border-top: 1px solid var(--color-border);
-    display:flex;
-    flex-direction:column;
-    gap: var(--spacing-sm);
-}
-.rp-meta{
-    display:flex;
-    justify-content:space-between;
-    gap: var(--spacing-sm);
-    font-size: 0.85rem;
-}
-.rp-meta-label{ color: var(--color-text-tertiary); }
-.rp-meta-value{ color: var(--color-text-secondary); text-align:right; word-break:break-all; }
-
-/* Connection bar inside chat area */
-.connection-bar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-md);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: var(--spacing-md);
-}
-.connection-left{ display:flex; align-items:center; gap: 0.6rem; }
-.connection-dot{
-    width:10px;height:10px;border-radius:50%;
-    background: var(--color-text-tertiary);
-}
-.connection-dot.online{ background: var(--color-success); }
-.connection-dot.offline{ background: #c0392b; }
-.connection-text{ color: var(--color-text-secondary); font-size: 0.95rem; }
-.connection-right{
-    font-family: var(--font-body);
-    color: var(--color-text-tertiary);
-    font-size: 0.9rem;
-}
-@media (max-width: 1100px){
-    .right-panel{ display:none; }
+    font-size: 20px;
 }
 
+.sidebar ul {
+    list-style: none;
+}
 
-/* Typing indicator */
-.typing-indicator{
-    display:flex;
-    gap: 6px;
-    align-items:center;
-    padding: 0.4rem 0;
+.sidebar ul li {
+    padding: 14px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
 }
-.typing-indicator span{
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-text-tertiary);
-    display:inline-block;
-    animation: typingBounce 1.1s ease-in-out infinite;
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
 }
-.typing-indicator span:nth-child(2){ animation-delay: 0.15s; }
-.typing-indicator span:nth-child(3){ animation-delay: 0.3s; }
-@keyframes typingBounce{
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-    30% { transform: translateY(-6px); opacity: 1; }
+
+/* Main Content */
+.main {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.search {
+    background: var(--surface);
+    padding: 10px 16px;
+    border-radius: 12px;
+    width: 300px;
+    border: none;
+    color: white;
+}
+
+/* Stats Cards */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: rgba(255,255,255,0.03);
+    border-radius: 18px;
+    padding: 24px;
+    transition: 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.card h4 {
+    font-weight: 500;
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-size: 32px;
+    margin-bottom: 6px;
+}
+
+.trend-up {
+    color: var(--accent);
+}
+
+.trend-down {
+    color: var(--danger);
+}
+
+/* Charts Section */
+.charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* AI Insights */
+.ai-panel {
+    background: rgba(91,108,255,0.08);
+    border: 1px solid rgba(91,108,255,0.2);
+    padding: 20px;
+    border-radius: 18px;
+}
+
+.ai-panel h3 {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.ai-panel ul {
+    list-style: none;
+}
+
+.ai-panel ul li {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* Table */
+.table-container {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+}
+
+th {
+    opacity: 0.6;
+    font-size: 13px;
+}
+
+tr {
+    transition: 0.2s;
+}
+
+tr:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.badge.high { background: rgba(255,77,109,0.2); color: var(--danger); }
+.badge.medium { background: rgba(255,176,32,0.2); color: var(--warning); }
+.badge.low { background: rgba(0,194,168,0.2); color: var(--accent); }
+
+button {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(91,108,255,0.6);
 }
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <rect x="4" y="4" width="10" height="10" fill="currentColor" opacity="0.9"/>
-                        <rect x="18" y="4" width="10" height="10" fill="currentColor" opacity="0.6"/>
-                        <rect x="4" y="18" width="10" height="10" fill="currentColor" opacity="0.6"/>
-                        <rect x="18" y="18" width="10" height="10" fill="currentColor" opacity="0.3"/>
-                    </svg>
-                    <h1>Project<span>Forge</span></h1>
-                </div>
-            </div>
 
-            <div class="sidebar-content">
-                <button class="new-project-btn">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    New Project
-                </button>
-
-                <div class="projects-section">
-                    <h3 class="section-title">Recent Projects</h3>
-                    <div class="project-list">
-                        <div class="project-item active">
-                            <div class="project-icon">📱</div>
-                            <div class="project-info">
-                                <div class="project-name">Mobile App Redesign</div>
-                                <div class="project-date">Today, 2:34 PM</div>
-                            </div>
-                        </div>
-                        <div class="project-item">
-                            <div class="project-icon">🌐</div>
-                            <div class="project-info">
-                                <div class="project-name">E-commerce Platform</div>
-                                <div class="project-date">Yesterday</div>
-                            </div>
-                        </div>
-                        <div class="project-item">
-                            <div class="project-icon">🎨</div>
-                            <div class="project-info">
-                                <div class="project-name">Brand Identity System</div>
-                                <div class="project-date">3 days ago</div>
-                            </div>
-                        </div>
-                        <div class="project-item">
-                            <div class="project-icon">📊</div>
-                            <div class="project-info">
-                                <div class="project-name">Analytics Dashboard</div>
-                                <div class="project-date">Last week</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-footer">
-                <div class="auth-section">
-                    <button class="auth-btn signin-btn">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                            <path d="M9 9C11.0711 9 12.75 7.32107 12.75 5.25C12.75 3.17893 11.0711 1.5 9 1.5C6.92893 1.5 5.25 3.17893 5.25 5.25C5.25 7.32107 6.92893 9 9 9Z" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M15.75 16.5C15.75 13.6005 12.7279 11.25 9 11.25C5.27208 11.25 2.25 13.6005 2.25 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        Sign In
-                    </button>
-                    <button class="auth-btn signup-btn">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                            <path d="M9 9C11.0711 9 12.75 7.32107 12.75 5.25C12.75 3.17893 11.0711 1.5 9 1.5C6.92893 1.5 5.25 3.17893 5.25 5.25C5.25 7.32107 6.92893 9 9 9Z" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M15.75 16.5C15.75 13.6005 12.7279 11.25 9 11.25C5.27208 11.25 2.25 13.6005 2.25 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M14.25 4.5V7.5M12.75 6H15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        Sign Up
-                    </button>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="chat-container">
-                
-                <div class="connection-bar">
-                    <div class="connection-left">
-                        <span class="connection-dot" id="connectionDot"></span>
-                        <span class="connection-text" id="statusText">Connecting…</span>
-                    </div>
-                    <div class="connection-right" id="clockText">--:--:--</div>
-                </div>
-<div class="messages-area" id="messagesArea">
-                    <!-- Welcome Message -->
-                    <div class="welcome-message">
-                        <div class="welcome-icon">
-                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                                <rect x="8" y="8" width="14" height="14" fill="currentColor" opacity="0.9"/>
-                                <rect x="26" y="8" width="14" height="14" fill="currentColor" opacity="0.6"/>
-                                <rect x="8" y="26" width="14" height="14" fill="currentColor" opacity="0.6"/>
-                                <rect x="26" y="26" width="14" height="14" fill="currentColor" opacity="0.3"/>
-                            </svg>
-                        </div>
-                        <h2>Welcome to ProjectForge</h2>
-                        <p>Share your project idea and I'll help you plan, structure, and bring it to life. Upload images, documents, or use voice to get started.</p>
-                        
-                        <div class="quick-actions">
-                            <button class="quick-action-card">
-                                <div class="qa-icon">💡</div>
-                                <div class="qa-title">Start from scratch</div>
-                                <div class="qa-desc">I have a new project idea</div>
-                            </button>
-                            <button class="quick-action-card">
-                                <div class="qa-icon">📋</div>
-                                <div class="qa-title">Upload documents</div>
-                                <div class="qa-desc">I have project requirements</div>
-                            </button>
-                            <button class="quick-action-card">
-                                <div class="qa-icon">🎯</div>
-                                <div class="qa-title">Improve existing</div>
-                                <div class="qa-desc">Optimize my current project</div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Example Messages (hidden by default, shown after interaction) -->
-                    <!-- User Message Example -->
-                    <!-- <div class="message user-message">
-                        <div class="message-content">
-                            <p>I want to build a mobile app for fitness tracking</p>
-                        </div>
-                        <div class="message-avatar">You</div>
-                    </div> -->
-
-                    <!-- AI Message Example -->
-                    <!-- <div class="message ai-message">
-                        <div class="message-avatar">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <rect x="4" y="4" width="7" height="7" fill="currentColor" opacity="0.9"/>
-                                <rect x="13" y="4" width="7" height="7" fill="currentColor" opacity="0.6"/>
-                                <rect x="4" y="13" width="7" height="7" fill="currentColor" opacity="0.6"/>
-                                <rect x="13" y="13" width="7" height="7" fill="currentColor" opacity="0.3"/>
-                            </svg>
-                        </div>
-                        <div class="message-content">
-                            <p>Great! A fitness tracking app. Let me help you plan this project...</p>
-                        </div>
-                    </div> -->
-                </div>
-
-                <!-- Input Area -->
-                <div class="input-area">
-                    <div class="attachments-preview" id="attachmentsPreview"></div>
-                    
-                    <div class="input-wrapper">
-                        <div class="input-actions-left">
-                            <button class="action-btn" id="imageUploadBtn" title="Upload Image">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <rect x="2" y="4" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                                    <circle cx="7" cy="8.5" r="1.5" fill="currentColor"/>
-                                    <path d="M2 13L6 9L10 13M10 13L12 11L18 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                            <input type="file" id="imageInput" accept="image/*" multiple hidden>
-                            
-                            <button class="action-btn" id="fileUploadBtn" title="Upload File">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M10 14V6M10 6L7 9M10 6L13 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M3 14V15C3 16.1046 3.89543 17 5 17H15C16.1046 17 17 16.1046 17 15V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </button>
-                            <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" multiple hidden>
-                        </div>
-
-                        <textarea 
-                            id="messageInput" 
-                            placeholder="Describe your project idea or ask a question..."
-                            rows="1"
-                        ></textarea>
-
-                        <div class="input-actions-right">
-                            <button class="action-btn voice-btn" id="voiceBtn" title="Voice Input">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="mic-icon">
-                                    <rect x="8" y="2" width="4" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                                    <path d="M5 10C5 12.7614 7.23858 15 10 15C12.7614 15 15 12.7614 15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M10 15V18M7 18H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="stop-icon" style="display: none;">
-                                    <rect x="6" y="6" width="8" height="8" rx="1" fill="currentColor"/>
-                                </svg>
-                            </button>
-
-                            <button class="send-btn" id="sendBtn" disabled>
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="input-footer">
-                        <span class="footer-text">ProjectForge can make mistakes. Consider verifying important information.</span>
-                    </div>
-                </div>
-            </div>
-        </main>
-    
-        <!-- Right Panel: Quick Access -->
-        <aside class="right-panel">
-            <div class="right-panel-header">
-                <h3>Quick Access</h3>
-                <div class="conn-pill" id="connPill">
-                    <span class="conn-dot" id="connDot"></span>
-                    <span id="connText">Standalone</span>
-                </div>
-            </div>
-
-            <div class="right-panel-section">
-                <div class="rp-title">Applications</div>
-                <button class="rp-btn" data-cmd="open chrome">Chrome</button>
-                <button class="rp-btn" data-cmd="open youtube">YouTube</button>
-                <button class="rp-btn" data-cmd="open notepad">Notepad</button>
-                <button class="rp-btn" data-cmd="open vscode">VS Code</button>
-                <button class="rp-btn" data-cmd="open calculator">Calculator</button>
-            </div>
-
-            <div class="right-panel-section">
-                <div class="rp-title">System</div>
-                <button class="rp-btn" data-cmd="what time is it">Time & Date</button>
-                <button class="rp-btn" data-cmd="take a screenshot">Screenshot</button>
-                <button class="rp-btn" data-cmd="volume up">Volume Up</button>
-                <button class="rp-btn" data-cmd="volume down">Volume Down</button>
-                <button class="rp-btn" data-cmd="mute">Mute</button>
-            </div>
-
-            <div class="right-panel-section">
-                <div class="rp-title">Web</div>
-                <button class="rp-btn" data-cmd="search google for latest news">Google News</button>
-                <button class="rp-btn" data-cmd="open github.com">GitHub</button>
-            </div>
-
-            <div class="right-panel-footer">
-                <div class="rp-meta">
-                    <div class="rp-meta-label">Server</div>
-                    <div class="rp-meta-value" id="serverUrl">http://localhost:7878</div>
-                </div>
-                <div class="rp-meta">
-                    <div class="rp-meta-label">Mode</div>
-                    <div class="rp-meta-value" id="modeValue">Chat + Commands</div>
-                </div>
-            </div>
-        </aside>
+<div class="sidebar">
+    <h2>HealthAI</h2>
+    <ul>
+        <li class="active">Dashboard</li>
+        <li>Patients</li>
+        <li>Analytics</li>
+        <li>Reports</li>
+        <li>Settings</li>
+    </ul>
 </div>
 
-    <script>function updateClockText(){
-    const n = new Date();
-    const t = n.toTimeString().slice(0,8);
-    const el = document.getElementById('clockText');
-    if(el) el.textContent = t;
-}
-setInterval(updateClockText, 1000);
-updateClockText();
+<div class="main">
 
+    <div class="topbar">
+        <input class="search" placeholder="Search patients...">
+        <button>+ New Patient</button>
+    </div>
 
-// DOM Elements
-const messageInput = document.getElementById('messageInput');
-const sendBtn = document.getElementById('sendBtn');
-const messagesArea = document.getElementById('messagesArea');
-const voiceBtn = document.getElementById('voiceBtn');
-const imageUploadBtn = document.getElementById('imageUploadBtn');
-const imageInput = document.getElementById('imageInput');
-const fileUploadBtn = document.getElementById('fileUploadBtn');
-const fileInput = document.getElementById('fileInput');
-const attachmentsPreview = document.getElementById('attachmentsPreview');
-const newProjectBtn = document.querySelector('.new-project-btn');
-const quickActionCards = document.querySelectorAll('.quick-action-card');
-
-// State
-let isRecording = false;
-let mediaRecorder = null;
-let audioChunks = [];
-let attachedFiles = [];
-
-// ===== Backend (Jarvis server) =====
-const SERVER = 'http://localhost:7878';
-const statusText = document.getElementById('statusText');
-const connectionDot = document.getElementById('connectionDot');
-const connDot = document.getElementById('connDot');
-const connText = document.getElementById('connText');
-
-async function checkServer(){
-    try{
-        const r = await fetch(SERVER + '/ping', { signal: AbortSignal.timeout(2000) });
-        const d = await r.json();
-        if(d && d.status === 'online'){
-            setConnected(true);
-            return true;
-        }
-        setConnected(false);
-        return false;
-    }catch(e){
-        setConnected(false);
-        return false;
-    }
-}
-
-function setConnected(isOnline){
-    if(isOnline){
-        statusText.textContent = 'Server Connected';
-        connectionDot.classList.remove('offline'); connectionDot.classList.add('online');
-        connDot.classList.remove('offline'); connDot.classList.add('online');
-        connText.textContent = 'Online';
-    }else{
-        statusText.textContent = 'Server Offline';
-        connectionDot.classList.remove('online'); connectionDot.classList.add('offline');
-        connDot.classList.remove('online'); connDot.classList.add('offline');
-        connText.textContent = 'Offline';
-    }
-}
-
-async function askJarvis(userText){
-    setConnected(true); // optimistic while sending
-    statusText.textContent = 'Processing…';
-
-    // typing indicator
-    const typingId = addTypingIndicator();
-
-    try{
-        const res = await fetch(SERVER + '/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: userText }),
-            signal: AbortSignal.timeout(30000),
-        });
-
-        const data = await res.json();
-        removeTypingIndicator(typingId);
-
-        if(data && data.error){
-            addMessage('assistant', '⚠ ' + data.error);
-            statusText.textContent = 'Error';
-            return;
-        }
-
-        const reply = (data && data.reply) ? String(data.reply) : '';
-        const clean = reply.replace(/<action>.*?<\/action>/gs, '').trim();
-        addMessage('assistant', clean || 'Done.');
-        statusText.textContent = 'Ready';
-        setConnected(true);
-    }catch(e){
-        removeTypingIndicator(typingId);
-        setConnected(false);
-
-        if(e && e.name === 'TimeoutError'){
-            addMessage('assistant', '⚠ Request timed out. Is the server still running?');
-        }else{
-            addMessage('assistant',
-                '⚠ Cannot reach server. Open PowerShell and run: "python jarvis_server.py" then refresh.'
-            );
-        }
-        statusText.textContent = 'Disconnected';
-    }
-}
-
-// Auto-resize textarea
-messageInput.addEventListener('input', function() {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
-    toggleSendButton();
-});
-
-// Toggle send button based on input
-function toggleSendButton() {
-    const hasContent = messageInput.value.trim() !== '' || attachedFiles.length > 0;
-    sendBtn.disabled = !hasContent;
-}
-
-// Send message
-sendBtn.addEventListener('click', sendMessage);
-messageInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        if (!sendBtn.disabled) {
-            sendMessage();
-        }
-    }
-});
-
-async function sendMessage() {
-    const text = messageInput.value.trim();
-
-    if (text === '' && attachedFiles.length === 0) return;
-
-    // Hide welcome message if visible
-    const welcomeMessage = document.querySelector('.welcome-message');
-    if (welcomeMessage) {
-        welcomeMessage.style.animation = 'fadeOut 0.3s ease forwards';
-        setTimeout(() => welcomeMessage.remove(), 300);
-    }
-
-    // Create user message (show attachments in UI only)
-    const userMessageDiv = createUserMessage(text, attachedFiles);
-    messagesArea.appendChild(userMessageDiv);
-
-    // Capture attachments then clear UI
-    const sentAttachments = attachedFiles;
-    messageInput.value = '';
-    messageInput.style.height = 'auto';
-    attachedFiles = [];
-    updateAttachmentsPreview();
-    toggleSendButton();
-    scrollToBottom();
-
-    // NOTE: Backend currently receives text only (attachments are UI-only for now)
-    await askJarvis(text || '(attachments sent)');
-}
-
-function createUserMessage(text, files) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message user-message';
-    
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.textContent = 'You';
-    
-    const content = document.createElement('div');
-    content.className = 'message-content';
-    
-    // Add file previews if any
-    if (files.length > 0) {
-        const filesDiv = document.createElement('div');
-        filesDiv.style.marginBottom = '12px';
-        files.forEach(file => {
-            const fileTag = document.createElement('div');
-            fileTag.style.cssText = 'display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 6px; margin-right: 8px; margin-bottom: 8px; font-size: 0.875rem;';
-            fileTag.textContent = file.name;
-            filesDiv.appendChild(fileTag);
-        });
-        content.appendChild(filesDiv);
-    }
-    
-    if (text) {
-        const textP = document.createElement('p');
-        textP.textContent = text;
-        content.appendChild(textP);
-    }
-    
-    messageDiv.appendChild(content);
-    messageDiv.appendChild(avatar);
-    
-    return messageDiv;
-}
-
-function createAIMessage(text) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message ai-message';
-    
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <rect x="4" y="4" width="7" height="7" fill="currentColor" opacity="0.9"/>
-            <rect x="13" y="4" width="7" height="7" fill="currentColor" opacity="0.6"/>
-            <rect x="4" y="13" width="7" height="7" fill="currentColor" opacity="0.6"/>
-            <rect x="13" y="13" width="7" height="7" fill="currentColor" opacity="0.3"/>
-        </svg>
-    `;
-    
-    const content = document.createElement('div');
-    content.className = 'message-content';
-    
-    const textP = document.createElement('p');
-    textP.textContent = text;
-    content.appendChild(textP);
-    
-    messageDiv.appendChild(avatar);
-    messageDiv.appendChild(content);
-    
-    return messageDiv;
-}
-
-
-function scrollToBottom() {
-    messagesArea.scrollTop = messagesArea.scrollHeight;
-}
-
-// Voice Recording
-voiceBtn.addEventListener('click', toggleRecording);
-
-async function toggleRecording() {
-    if (!isRecording) {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            
-            mediaRecorder.ondataavailable = (event) => {
-                audioChunks.push(event.data);
-            };
-            
-            mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                // Here you would send audioBlob to your Python backend for transcription
-                // For now, we'll just add a placeholder
-                addAudioAttachment(audioBlob);
-                
-                // Stop all tracks
-                stream.getTracks().forEach(track => track.stop());
-            };
-            
-            mediaRecorder.start();
-            isRecording = true;
-            voiceBtn.classList.add('recording');
-            
-        } catch (error) {
-            console.error('Error accessing microphone:', error);
-            alert('Could not access microphone. Please check your permissions.');
-        }
-    } else {
-        mediaRecorder.stop();
-        isRecording = false;
-        voiceBtn.classList.remove('recording');
-    }
-}
-
-function addAudioAttachment(audioBlob) {
-    const file = new File([audioBlob], `voice-${Date.now()}.wav`, { type: 'audio/wav' });
-    attachedFiles.push(file);
-    updateAttachmentsPreview();
-    toggleSendButton();
-}
-
-// Image Upload
-imageUploadBtn.addEventListener('click', () => imageInput.click());
-imageInput.addEventListener('change', handleImageUpload);
-
-function handleImageUpload(e) {
-    const files = Array.from(e.target.files);
-    files.forEach(file => {
-        if (file.type.startsWith('image/')) {
-            attachedFiles.push(file);
-        }
-    });
-    updateAttachmentsPreview();
-    toggleSendButton();
-    imageInput.value = '';
-}
-
-// File Upload
-fileUploadBtn.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', handleFileUpload);
-
-function handleFileUpload(e) {
-    const files = Array.from(e.target.files);
-    attachedFiles.push(...files);
-    updateAttachmentsPreview();
-    toggleSendButton();
-    fileInput.value = '';
-}
-
-// Update Attachments Preview
-function updateAttachmentsPreview() {
-    attachmentsPreview.innerHTML = '';
-    
-    attachedFiles.forEach((file, index) => {
-        const attachmentItem = document.createElement('div');
-        attachmentItem.className = 'attachment-item';
-        
-        if (file.type.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            attachmentItem.appendChild(img);
-        } else {
-            const icon = document.createElement('span');
-            icon.textContent = '📄';
-            attachmentItem.appendChild(icon);
-        }
-        
-        const fileName = document.createElement('span');
-        fileName.textContent = file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name;
-        attachmentItem.appendChild(fileName);
-        
-        const removeBtn = document.createElement('span');
-        removeBtn.className = 'attachment-remove';
-        removeBtn.innerHTML = '✕';
-        removeBtn.onclick = () => removeAttachment(index);
-        attachmentItem.appendChild(removeBtn);
-        
-        attachmentsPreview.appendChild(attachmentItem);
-    });
-}
-
-function removeAttachment(index) {
-    attachedFiles.splice(index, 1);
-    updateAttachmentsPreview();
-    toggleSendButton();
-}
-
-// New Project Button
-newProjectBtn.addEventListener('click', () => {
-    // Clear messages and show welcome message
-    messagesArea.innerHTML = `
-        <div class="welcome-message">
-            <div class="welcome-icon">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                    <rect x="8" y="8" width="14" height="14" fill="currentColor" opacity="0.9"/>
-                    <rect x="26" y="8" width="14" height="14" fill="currentColor" opacity="0.6"/>
-                    <rect x="8" y="26" width="14" height="14" fill="currentColor" opacity="0.6"/>
-                    <rect x="26" y="26" width="14" height="14" fill="currentColor" opacity="0.3"/>
-                </svg>
-            </div>
-            <h2>Welcome to ProjectForge</h2>
-            <p>Share your project idea and I'll help you plan, structure, and bring it to life. Upload images, documents, or use voice to get started.</p>
-            
-            <div class="quick-actions">
-                <button class="quick-action-card">
-                    <div class="qa-icon">💡</div>
-                    <div class="qa-title">Start from scratch</div>
-                    <div class="qa-desc">I have a new project idea</div>
-                </button>
-                <button class="quick-action-card">
-                    <div class="qa-icon">📋</div>
-                    <div class="qa-title">Upload documents</div>
-                    <div class="qa-desc">I have project requirements</div>
-                </button>
-                <button class="quick-action-card">
-                    <div class="qa-icon">🎯</div>
-                    <div class="qa-title">Improve existing</div>
-                    <div class="qa-desc">Optimize my current project</div>
-                </button>
-            </div>
+    <div class="stats">
+        <div class="card">
+            <h4>Total Patients</h4>
+            <h2>1,284</h2>
+            <span class="trend-up">↑ 12% this week</span>
         </div>
-    `;
-    
-    // Re-attach event listeners to new quick action cards
-    attachQuickActionListeners();
-});
 
-// Quick Action Cards
-function attachQuickActionListeners() {
-    const cards = document.querySelectorAll('.quick-action-card');
-    cards.forEach(card => {
-        card.addEventListener('click', function() {
-            const title = this.querySelector('.qa-title').textContent;
-            const prompts = {
-                'Start from scratch': 'I have a new project idea and need help planning it from the ground up.',
-                'Upload documents': 'I have project documentation that I\'d like to discuss and improve.',
-                'Improve existing': 'I have an existing project that I want to optimize and enhance.'
-            };
-            messageInput.value = prompts[title] || '';
-            messageInput.focus();
-            toggleSendButton();
-        });
-    });
-}
+        <div class="card">
+            <h4>High Risk</h4>
+            <h2>42</h2>
+            <span class="trend-down">↑ 4 new alerts</span>
+        </div>
 
-attachQuickActionListeners();
+        <div class="card">
+            <h4>Recovered</h4>
+            <h2>320</h2>
+            <span class="trend-up">↑ 8% improvement</span>
+        </div>
+    </div>
 
-// Project Item Click
-document.querySelectorAll('.project-item').forEach(item => {
-    item.addEventListener('click', function() {
-        document.querySelectorAll('.project-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        
-        // Here you would load the project conversation from your Python backend
-        // For now, we'll just clear and show welcome
-        const projectName = this.querySelector('.project-name').textContent;
-        console.log('Loading project:', projectName);
-    });
-});
+    <div class="charts">
+        <div class="card">
+            <h4>Patient Activity Trends</h4>
+            <canvas id="chart"></canvas>
+        </div>
 
-// Auth buttons
-const signInBtn = document.querySelector('.signin-btn');
-const signUpBtn = document.querySelector('.signup-btn');
+        <div class="ai-panel">
+            <h3>🧠 AI Insights</h3>
+            <ul>
+                <li>• 3 patients showing early hypertension signals</li>
+                <li>• 1 urgent cardiovascular risk detected</li>
+                <li>• Recovery rates improving by 8%</li>
+            </ul>
+        </div>
+    </div>
 
-if (signInBtn) {
-    signInBtn.addEventListener('click', () => {
-        // TODO: Implement sign-in functionality
-        // This will connect to your Python backend authentication
-        console.log('Sign In clicked');
-        alert('Sign In functionality will be connected to your Python backend');
-    });
-}
+    <div class="table-container">
+        <h4 style="margin-bottom:15px;">Recent Patients</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Condition</th>
+                    <th>Risk Level</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John Doe</td>
+                    <td>Hypertension</td>
+                    <td><span class="badge high">High</span></td>
+                    <td><button>View</button></td>
+                </tr>
+                <tr>
+                    <td>Sarah Lee</td>
+                    <td>Diabetes</td>
+                    <td><span class="badge medium">Medium</span></td>
+                    <td><button>View</button></td>
+                </tr>
+                <tr>
+                    <td>Michael Smith</td>
+                    <td>Routine Check</td>
+                    <td><span class="badge low">Low</span></td>
+                    <td><button>View</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-if (signUpBtn) {
-    signUpBtn.addEventListener('click', () => {
-        // TODO: Implement sign-up functionality
-        // This will connect to your Python backend authentication
-        console.log('Sign Up clicked');
-        alert('Sign Up functionality will be connected to your Python backend');
-    });
-}
+</div>
 
-// Mobile sidebar toggle (optional - add hamburger menu if needed)
-const createMobileMenu = () => {
-    if (window.innerWidth <= 768) {
-        // Add mobile menu functionality here if needed
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+            label: 'Activity',
+            data: [12, 19, 14, 25, 22, 30, 28],
+            borderColor: '#5B6CFF',
+            backgroundColor: 'rgba(91,108,255,0.2)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointRadius: 0
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false }},
+        scales: {
+            x: { grid: { display: false }},
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }}
+        }
     }
-};
-
-window.addEventListener('resize', createMobileMenu);
-createMobileMenu();
-
-console.log('ProjectForge initialized successfully! Ready for Python backend integration.');
-
-
-// Right-panel quick commands
-document.querySelectorAll('.rp-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-        const cmd = btn.getAttribute('data-cmd') || btn.textContent.trim();
-        messageInput.value = cmd;
-        messageInput.dispatchEvent(new Event('input'));
-        await sendMessage();
-    });
 });
-
-
-checkServer();
 </script>
+
 </body>
 </html>
