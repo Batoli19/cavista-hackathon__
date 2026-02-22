@@ -1,131 +1,15 @@
-Healthcare documentation is broken.
+# 💫 About Me:
+Healthcare documentation is broken.<br><br>Clinicians spend more time typing than treating. In many African healthcare systems — especially in Botswana — language barriers, documentation overload, and fragmented systems reduce care quality.<br><br>We asked:<br><br>What if a clinician could just speak — and the system handled everything else?<br><br>This project is our answer.<br><br>🚀 What It Does<br><br>Our platform is a Voice-First Clinical Assistant that:<br><br>🎙️ Converts clinician–patient conversations into structured medical data<br><br>🧠 Extracts symptoms, vitals, diagnosis clues, and medications<br><br>📊 Generates actionable insights in real time<br><br>🗂️ Automatically structures documentation<br><br>🌐 Supports Setswana for localized care delivery<br><br>📈 Provides dashboards for clinical intelligence<br><br>It transforms natural speech into:<br><br>{<br>  "patient_name": "Mpho",<br>  "symptoms": ["headache", "fever"],<br>  "duration": "3 days",<br>  "possible_diagnosis": "malaria",<br>  "risk_level": "medium",<br>  "recommended_action": "lab test"<br>}<br><br>No typing. No manual structuring. Just intelligent care.<br><br>🧠 Core Features<br>1️⃣ Voice → Structured Clinical Data<br><br>Real-time speech-to-text<br><br>AI-powered medical entity extraction<br><br>Auto SOAP note generation<br><br>2️⃣ Clinical Insight Engine<br><br>Risk scoring<br><br>Symptom clustering<br><br>Early diagnosis suggestions<br><br>Pattern detection<br><br>3️⃣ Smart Dashboard<br><br>Patient summaries<br><br>Trends & alerts<br><br>Predictive flags<br><br>Actionable recommendations<br><br>4️⃣ Setswana-Ready System 🇧🇼<br><br>Designed specifically for Botswana healthcare workflows.<br><br>We are building multilingual NLP pipelines to:<br><br>Detect Setswana medical phrases<br><br>Normalize into structured English medical fields<br><br>Preserve local patient communication authenticity<br><br>🏗️ How We Built It<br>🖥️ Backend<br><br>Python (Flask API server)<br><br>AI routing engine<br><br>Real-time processing pipeline<br><br>SSE (Server-Sent Events) for live updates<br><br>🧠 AI Layer<br><br>LLM-powered medical parsing<br><br>Custom extraction prompts<br><br>Confidence scoring logic<br><br>Insight generation engine<br><br>🌐 Frontend<br><br>Modern dashboard UI<br><br>Live data streaming<br><br>Responsive layout<br><br>Premium medical interface design<br><br>🔊 Voice Integration<br><br>Speech-to-text processing<br><br>Real-time transcription<br><br>Structured output pipeline<br><br>🏥 System Architecture<br>Voice Input<br>    ↓<br>Speech-to-Text<br>    ↓<br>AI Extraction Engine<br>    ↓<br>Structured Medical Data<br>    ↓<br>Insight & Risk Engine<br>    ↓<br>Live Clinical Dashboard
 
-Clinicians spend more time typing than treating. In many African healthcare systems — especially in Botswana — language barriers, documentation overload, and fragmented systems reduce care quality.
 
-We asked:
+# 💻 Tech Stack:
+![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![mlflow](https://img.shields.io/badge/mlflow-%23d9ead3.svg?style=for-the-badge&logo=numpy&logoColor=blue) ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=for-the-badge&logo=Matplotlib&logoColor=black) ![Scipy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![Plotly](https://img.shields.io/badge/Plotly-%233F4F75.svg?style=for-the-badge&logo=plotly&logoColor=white) ![Playwright](https://img.shields.io/badge/-playwright-%232EAD33?style=for-the-badge&logo=playwright&logoColor=white) ![Testing-Library](https://img.shields.io/badge/-TestingLibrary-%23E33332?style=for-the-badge&logo=testing-library&logoColor=white) ![Cypress](https://img.shields.io/badge/-cypress-%23E5E5E5?style=for-the-badge&logo=cypress&logoColor=058a5e) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![Unity](https://img.shields.io/badge/unity-%23000000.svg?style=for-the-badge&logo=unity&logoColor=white) ![Trello](https://img.shields.io/badge/Trello-%23026AA7.svg?style=for-the-badge&logo=Trello&logoColor=white) ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![Web3.js](https://img.shields.io/badge/web3.js-F16822?style=for-the-badge&logo=web3.js&logoColor=white) ![Webpack](https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black) ![GitLab](https://img.shields.io/badge/gitlab-%23181717.svg?style=for-the-badge&logo=gitlab&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+# 📊 GitHub Stats:
+![](https://github-readme-stats.vercel.app/api?username=batoi&theme=dark&hide_border=false&include_all_commits=false&count_private=false)<br/>
+![](https://nirzak-streak-stats.vercel.app/?user=batoi&theme=dark&hide_border=false)<br/>
+![](https://github-readme-stats.vercel.app/api/top-langs/?username=batoi&theme=dark&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
 
-What if a clinician could just speak — and the system handled everything else?
+---
+[![](https://visitcount.itsvg.in/api?id=batoi&icon=0&color=0)](https://visitcount.itsvg.in)
 
-This project is our answer.
-
-🚀 What It Does
-
-Our platform is a Voice-First Clinical Assistant that:
-
-🎙️ Converts clinician–patient conversations into structured medical data
-
-🧠 Extracts symptoms, vitals, diagnosis clues, and medications
-
-📊 Generates actionable insights in real time
-
-🗂️ Automatically structures documentation
-
-🌐 Supports Setswana for localized care delivery
-
-📈 Provides dashboards for clinical intelligence
-
-It transforms natural speech into:
-
-{
-  "patient_name": "Mpho",
-  "symptoms": ["headache", "fever"],
-  "duration": "3 days",
-  "possible_diagnosis": "malaria",
-  "risk_level": "medium",
-  "recommended_action": "lab test"
-}
-
-No typing. No manual structuring. Just intelligent care.
-
-🧠 Core Features
-1️⃣ Voice → Structured Clinical Data
-
-Real-time speech-to-text
-
-AI-powered medical entity extraction
-
-Auto SOAP note generation
-
-2️⃣ Clinical Insight Engine
-
-Risk scoring
-
-Symptom clustering
-
-Early diagnosis suggestions
-
-Pattern detection
-
-3️⃣ Smart Dashboard
-
-Patient summaries
-
-Trends & alerts
-
-Predictive flags
-
-Actionable recommendations
-
-4️⃣ Setswana-Ready System 🇧🇼
-
-Designed specifically for Botswana healthcare workflows.
-
-We are building multilingual NLP pipelines to:
-
-Detect Setswana medical phrases
-
-Normalize into structured English medical fields
-
-Preserve local patient communication authenticity
-
-🏗️ How We Built It
-🖥️ Backend
-
-Python (Flask API server)
-
-AI routing engine
-
-Real-time processing pipeline
-
-SSE (Server-Sent Events) for live updates
-
-🧠 AI Layer
-
-LLM-powered medical parsing
-
-Custom extraction prompts
-
-Confidence scoring logic
-
-Insight generation engine
-
-🌐 Frontend
-
-Modern dashboard UI
-
-Live data streaming
-
-Responsive layout
-
-Premium medical interface design
-
-🔊 Voice Integration
-
-Speech-to-text processing
-
-Real-time transcription
-
-Structured output pipeline
-
-🏥 System Architecture
-Voice Input
-    ↓
-Speech-to-Text
-    ↓
-AI Extraction Engine
-    ↓
-Structured Medical Data
-    ↓
-Insight & Risk Engine
-    ↓
-Live Clinical Dashboard
+<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
